@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Polynote</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:100,300,400,500,700" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.62/Tone.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="../build/three.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/16.3.5/Tween.min.js"></script>
+  <script src="  https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.4/TweenMax.min.js"></script>
+  <script src="../js/renderers/Projector.js"></script>
+  <script src="../js/controls/OrbitControls.js"></script>
+  <script src="../js/libs/inflate.min.js"></script>
+  <script src="../js/loaders/FBXLoader.js"></script>
+  <script src="../js/Detector.js"></script>
+  <script src="../js/libs/stats.min.js"></script>
+  <script src="../js/loaders/OBJLoader.js"></script>
+  <script src="../js/loaders/ColladaLoader.js"></script>
+  <script src="../js/loaders/AssimpLoader.js"></script>
+
+
+  <script src="/socket.io.js"></script>
+  <script>
+  var socket = io.connect('/');
+  </script>
+</head>
+<body>
+
+
+  <!-- old Code -->
+  <div class="container">
+    <div class="col-lg-12">
+      <div class="reset-timer">
+        <p id="p4"></p>
+      </div>
+</div>
+</div>
+<a href="" class="lightbox" id="aboutbox">
+  <div class="container">
+    <div class="col-lg-12">
+      <div class="about-text">
+        <p>About the project</p>
+      </div>
+      <div class="col-lg-12">
+        <div class="about-running-text">
+          <p>Polynote is a multiplayer musical experience in the browser!</p>
+        </div>
+        <div class="about-running-text">
+          <br>
+          <p>1. Each shape represents a different sound.</p>
+          <p>2. Try tapping on the screen to place on different positions on the grid.</p>
+          <p>3. When placing a note on the screen, a short press will produce a small and quite polynote.</p>
+          <p>4. When placing a note on the screen, a long press will produce a big and loud polynote.</p>
+        </div>
+        <div class="about-running-text">
+          <br>
+          <p>Try it out, make some noise.</p>
+        </div>
+
+        <div class="about-running-text">
+          <br>
+          <p>Created by Itay Niv | 2018 </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>
+
+<script src="main.js"></script>
+<!-- <script src="shapes.js"></script> -->
+
+
+
+
+</body>
+</html>
