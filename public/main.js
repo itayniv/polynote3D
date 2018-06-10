@@ -37,6 +37,8 @@ var bgAboutButton;
 var lightBoxOn = false;
 var rollOverMesh, rollOverMaterial;
 
+var unhoveredButtonScale = .24;
+var unhoveredButtonScaleUp = .35;
 
 var mouseDownEvent = false;
 
@@ -716,12 +718,8 @@ function loadButtonbyOrder(){
     var protoMat = new THREE.MeshLambertMaterial( { color: playerColorArray[i] }  );
     noteButtonObject.material = protoMat;
 
-    // protoInstance.position.copy(newSteps[i].voxelPos);
-    // noteButtonObject.position.y = 0;
-
     var selectedTexture = new THREE.MeshLambertMaterial( { color: playerColorArray[i] }  );
 
-    // var currButtonPosition = -250+i*100;
     var materialSynth01 = new THREE.MeshLambertMaterial( { color: playerColorArray[i] }  );
     var materialSynth02 = new THREE.MeshLambertMaterial( { color: playerColorArray[i] }  );
     var materialSynth03 = new THREE.MeshLambertMaterial( { color: playerColorArray[i] }  );
@@ -730,19 +728,18 @@ function loadButtonbyOrder(){
     var materialSynth06 = new THREE.MeshLambertMaterial( { color: playerColorArray[i] }  );
     var materialSynth07 = new THREE.MeshLambertMaterial( { color: playerColorArray[i] }  );
 
-
-    noteButtonObject.rotation.copy( camera.rotation );
-    noteButtonObject.updateMatrix();
+    // noteButtonObject.rotation.copy( camera.rotation );
+    // noteButtonObject.updateMatrix();
     // noteButtonObject.translateZ( - 1000 );
-    noteButtonObject.material = materialSynth01;
-    noteButtonObject.material.opacity = .5;
-    noteButtonObject.rotation.z = 0;
+    // noteButtonObject.material = materialSynth01;
+    // noteButtonObject.material.opacity = .5;
+    // noteButtonObject.rotation.z = 0;
 
-    noteButtonObject.scale.x = .3;
-    noteButtonObject.scale.y = .3;
-    noteButtonObject.scale.z = .3;
-    noteButtonObject.rotation.y = 45 * (Math.PI / 180);
-    noteButtonObject.rotation.x = 180 * (Math.PI / 180);
+    noteButtonObject.scale.x = unhoveredButtonScale;
+    noteButtonObject.scale.y = unhoveredButtonScale;
+    noteButtonObject.scale.z = unhoveredButtonScale;
+    // noteButtonObject.rotation.y = 45 * (Math.PI / 90);
+    // noteButtonObject.rotation.x = 180 * (Math.PI / 90);
 
     noteButtonObject.name = "noteButtonObject"+(i+1) ;
     scene.add( ( noteButtonObject ) );
@@ -925,7 +922,6 @@ function updatevoxels(newSteps) {
           protoInstance.name = i + newSteps[i].instrument ;
           scene.add( ( protoInstance ) );
           objects.push ( protoInstance );
-
 
         } else if (newSteps[i].instrument == 'synth04'){
 
@@ -1125,7 +1121,6 @@ function updatevoxels(newSteps) {
         //////////////////////////
         /////////end obj load////
 
-
         ////add the objects
 
       } else if (listCellState[i].isAdded == 1 && newSteps[i].isAdded == 0) {
@@ -1134,12 +1129,10 @@ function updatevoxels(newSteps) {
         var voxelToRemove = newSteps[i].voxelName;
         var selectedObject = scene.getObjectByName(voxelToRemove);
 
-
         scene.remove( selectedObject );
         objects.splice( objects.indexOf( selectedObject ), 1 );
 
       }
-
       listCellState[i] = newSteps[i];
     }
   }
@@ -1182,8 +1175,6 @@ socket.on('resetAll', function(stepsreset){
     thisnotationArr[i] = false;
   }
   arrayrecieved = true;
-
-
 });
 
 
@@ -1203,7 +1194,6 @@ body.onkeydown = function (e) {
   }
   if (event.keyCode == 48){
     socket.emit('ClientReset', {'resetfromclient': 1});
-
   }
 };
 
@@ -1213,8 +1203,6 @@ function animate( time ) {
   TWEEN.update( time );
 }
 animate();
-
-
 
 
 if (checkId != true){
@@ -2484,13 +2472,13 @@ function onMouseMove( event ) {
       //synthbutton
       if( HOVER_INTERSECTED.name == "noteButtonObject1") {
 
-        if (thisbuttonObject1.scale.x == .3){
+        if (thisbuttonObject1.scale.x == unhoveredButtonScale){
           // function scaleTweenUp(start, end, speed, )
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject1.scale.x = this.scale;
               thisbuttonObject1.scale.y = this.scale;
@@ -2499,22 +2487,23 @@ function onMouseMove( event ) {
           };
           buttonScaleUp().start();
         }
-        thisbuttonObject2.scale.set(0.3,0.3,0.3);
-        thisbuttonObject3.scale.set(0.3,0.3,0.3);
-        thisbuttonObject4.scale.set(0.3,0.3,0.3);
-        thisbuttonObject5.scale.set(0.3,0.3,0.3);
-        thisbuttonObject6.scale.set(0.3,0.3,0.3);
-        thisbuttonObject7.scale.set(0.3,0.3,0.3);
+        //TODO scalethis
+        thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
 
       } else if ( HOVER_INTERSECTED.name == "noteButtonObject2" ){
 
-        if (thisbuttonObject2.scale.x == .3){
+        if (thisbuttonObject2.scale.x == unhoveredButtonScale){
           // function scaleTweenUp(start, end, speed, )
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject2.scale.x = this.scale;
               thisbuttonObject2.scale.y = this.scale;
@@ -2523,22 +2512,22 @@ function onMouseMove( event ) {
           };
           buttonScaleUp().start();
         }
-        thisbuttonObject1.scale.set(0.3,0.3,0.3);
-        thisbuttonObject3.scale.set(0.3,0.3,0.3);
-        thisbuttonObject4.scale.set(0.3,0.3,0.3);
-        thisbuttonObject5.scale.set(0.3,0.3,0.3);
-        thisbuttonObject6.scale.set(0.3,0.3,0.3);
-        thisbuttonObject7.scale.set(0.3,0.3,0.3);
+        thisbuttonObject1.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
 
       } else if ( HOVER_INTERSECTED.name == "noteButtonObject3" ){
 
-        if (thisbuttonObject3.scale.x == .3){
+        if (thisbuttonObject3.scale.x == unhoveredButtonScale){
           // function scaleTweenUp(start, end, speed, )
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject3.scale.x = this.scale;
               thisbuttonObject3.scale.y = this.scale;
@@ -2548,22 +2537,22 @@ function onMouseMove( event ) {
           buttonScaleUp().start();
         }
 
-        thisbuttonObject1.scale.set(0.3,0.3,0.3);
-        thisbuttonObject2.scale.set(0.3,0.3,0.3);
-        thisbuttonObject4.scale.set(0.3,0.3,0.3);
-        thisbuttonObject5.scale.set(0.3,0.3,0.3);
-        thisbuttonObject6.scale.set(0.3,0.3,0.3);
-        thisbuttonObject7.scale.set(0.3,0.3,0.3);
+        thisbuttonObject1.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
 
       } else if ( HOVER_INTERSECTED.name == "noteButtonObject4" ){
 
-        if (thisbuttonObject4.scale.x == .3){
+        if (thisbuttonObject4.scale.x == unhoveredButtonScale){
           // function scaleTweenUp(start, end, speed, )
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject4.scale.x = this.scale;
               thisbuttonObject4.scale.y = this.scale;
@@ -2573,23 +2562,23 @@ function onMouseMove( event ) {
           buttonScaleUp().start();
         }
 
-        thisbuttonObject1.scale.set(0.3,0.3,0.3);
-        thisbuttonObject2.scale.set(0.3,0.3,0.3);
-        thisbuttonObject3.scale.set(0.3,0.3,0.3);
-        thisbuttonObject5.scale.set(0.3,0.3,0.3);
-        thisbuttonObject6.scale.set(0.3,0.3,0.3);
-        thisbuttonObject7.scale.set(0.3,0.3,0.3);
+        thisbuttonObject1.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
 
 
       } else if ( HOVER_INTERSECTED.name == "noteButtonObject5" ){
 
-        if (thisbuttonObject5.scale.x == .3){
+        if (thisbuttonObject5.scale.x == unhoveredButtonScale){
           // function scaleTweenUp(start, end, speed, )
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject5.scale.x = this.scale;
               thisbuttonObject5.scale.y = this.scale;
@@ -2598,22 +2587,22 @@ function onMouseMove( event ) {
           };
           buttonScaleUp().start();
         }
-        thisbuttonObject1.scale.set(0.3,0.3,0.3);
-        thisbuttonObject2.scale.set(0.3,0.3,0.3);
-        thisbuttonObject3.scale.set(0.3,0.3,0.3);
-        thisbuttonObject4.scale.set(0.3,0.3,0.3);
-        thisbuttonObject6.scale.set(0.3,0.3,0.3);
-        thisbuttonObject7.scale.set(0.3,0.3,0.3);
+        thisbuttonObject1.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
 
       } else if ( HOVER_INTERSECTED.name == "noteButtonObject6" ){
 
-        if (thisbuttonObject6.scale.x == .3){
+        if (thisbuttonObject6.scale.x == unhoveredButtonScale){
           // function scaleTweenUp(start, end, speed, )
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject6.scale.x = this.scale;
               thisbuttonObject6.scale.y = this.scale;
@@ -2623,22 +2612,22 @@ function onMouseMove( event ) {
           buttonScaleUp().start();
         }
 
-        thisbuttonObject1.scale.set(0.3,0.3,0.3);
-        thisbuttonObject2.scale.set(0.3,0.3,0.3);
-        thisbuttonObject3.scale.set(0.3,0.3,0.3);
-        thisbuttonObject4.scale.set(0.3,0.3,0.3);
-        thisbuttonObject5.scale.set(0.3,0.3,0.3);
-        thisbuttonObject7.scale.set(0.3,0.3,0.3);
+        thisbuttonObject1.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
 
       } else if ( HOVER_INTERSECTED.name == "noteButtonObject7" ){
 
-        if (thisbuttonObject7.scale.x == .3){
+        if (thisbuttonObject7.scale.x == unhoveredButtonScale){
           // function scaleTweenUp(start, end, speed, )
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject7.scale.x = this.scale;
               thisbuttonObject7.scale.y = this.scale;
@@ -2647,12 +2636,12 @@ function onMouseMove( event ) {
           };
           buttonScaleUp().start();
         }
-        thisbuttonObject1.scale.set(0.3,0.3,0.3);
-        thisbuttonObject2.scale.set(0.3,0.3,0.3);
-        thisbuttonObject3.scale.set(0.3,0.3,0.3);
-        thisbuttonObject4.scale.set(0.3,0.3,0.3);
-        thisbuttonObject5.scale.set(0.3,0.3,0.3);
-        thisbuttonObject6.scale.set(0.3,0.3,0.3);
+        thisbuttonObject1.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
       }
     }
   } else if ( hoverIntersects.length <= 0 ) {
@@ -2683,13 +2672,13 @@ function onMouseMove( event ) {
 
 
       if (buttonArrayState[0] == 1){
-        if (thisbuttonObject1.scale.x == .3){
+        if (thisbuttonObject1.scale.x == unhoveredButtonScale){
           // function scaleTweenUp(start, end, speed, )
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject1.scale.x = this.scale;
               thisbuttonObject1.scale.y = this.scale;
@@ -2698,21 +2687,21 @@ function onMouseMove( event ) {
           };
           buttonScaleUp().start();
         }
-        thisbuttonObject2.scale.set(0.3,0.3,0.3);
-        thisbuttonObject3.scale.set(0.3,0.3,0.3);
-        thisbuttonObject4.scale.set(0.3,0.3,0.3);
-        thisbuttonObject5.scale.set(0.3,0.3,0.3);
-        thisbuttonObject6.scale.set(0.3,0.3,0.3);
-        thisbuttonObject7.scale.set(0.3,0.3,0.3);
+        thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
 
       } else if (buttonArrayState[1] == 1){
-        thisbuttonObject1.scale.set(0.3,0.3,0.3);
-        if (thisbuttonObject2.scale.x == .3){
+        thisbuttonObject1.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        if (thisbuttonObject2.scale.x == unhoveredButtonScale){
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject2.scale.x = this.scale;
               thisbuttonObject2.scale.y = this.scale;
@@ -2721,21 +2710,21 @@ function onMouseMove( event ) {
           };
           buttonScaleUp().start();
         }
-        thisbuttonObject3.scale.set(0.3,0.3,0.3);
-        thisbuttonObject4.scale.set(0.3,0.3,0.3);
-        thisbuttonObject5.scale.set(0.3,0.3,0.3);
-        thisbuttonObject6.scale.set(0.3,0.3,0.3);
-        thisbuttonObject7.scale.set(0.3,0.3,0.3);
+        thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
 
       } else if (buttonArrayState[2] == 1){
-        thisbuttonObject1.scale.set(0.3,0.3,0.3);
-        thisbuttonObject2.scale.set(0.3,0.3,0.3);
-        if (thisbuttonObject3.scale.x == .3){
+        thisbuttonObject1.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        if (thisbuttonObject3.scale.x == unhoveredButtonScale){
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject3.scale.x = this.scale;
               thisbuttonObject3.scale.y = this.scale;
@@ -2744,21 +2733,21 @@ function onMouseMove( event ) {
           };
           buttonScaleUp().start();
         }
-        thisbuttonObject4.scale.set(0.3,0.3,0.3);
-        thisbuttonObject5.scale.set(0.3,0.3,0.3);
-        thisbuttonObject6.scale.set(0.3,0.3,0.3);
-        thisbuttonObject7.scale.set(0.3,0.3,0.3);
+        thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
 
       } else if (buttonArrayState[3] == 1){
-        thisbuttonObject1.scale.set(0.3,0.3,0.3);
-        thisbuttonObject2.scale.set(0.3,0.3,0.3);
-        thisbuttonObject3.scale.set(0.3,0.3,0.3);
-        if (thisbuttonObject4.scale.x == .3){
+        thisbuttonObject1.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        if (thisbuttonObject4.scale.x == unhoveredButtonScale){
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject4.scale.x = this.scale;
               thisbuttonObject4.scale.y = this.scale;
@@ -2767,21 +2756,21 @@ function onMouseMove( event ) {
           };
           buttonScaleUp().start();
         }
-        thisbuttonObject5.scale.set(0.3,0.3,0.3);
-        thisbuttonObject6.scale.set(0.3,0.3,0.3);
-        thisbuttonObject7.scale.set(0.3,0.3,0.3);
+        thisbuttonObject5.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
 
       } else if (buttonArrayState[4] == 1){
-        thisbuttonObject1.scale.set(0.3,0.3,0.3);
-        thisbuttonObject2.scale.set(0.3,0.3,0.3);
-        thisbuttonObject3.scale.set(0.3,0.3,0.3);
-        thisbuttonObject4.scale.set(0.3,0.3,0.3);
-        if (thisbuttonObject5.scale.x == .3){
+        thisbuttonObject1.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        if (thisbuttonObject5.scale.x == unhoveredButtonScale){
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject5.scale.x = this.scale;
               thisbuttonObject5.scale.y = this.scale;
@@ -2790,21 +2779,21 @@ function onMouseMove( event ) {
           };
           buttonScaleUp().start();
         }
-        thisbuttonObject6.scale.set(0.3,0.3,0.3);
-        thisbuttonObject7.scale.set(0.3,0.3,0.3);
+        thisbuttonObject6.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
 
       } else if (buttonArrayState[5] == 1){
-        thisbuttonObject1.scale.set(0.3,0.3,0.3);
-        thisbuttonObject2.scale.set(0.3,0.3,0.3);
-        thisbuttonObject3.scale.set(0.3,0.3,0.3);
-        thisbuttonObject4.scale.set(0.3,0.3,0.3);
-        thisbuttonObject5.scale.set(0.3,0.3,0.3);
-        if (thisbuttonObject6.scale.x == .3){
+        thisbuttonObject1.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        if (thisbuttonObject6.scale.x == unhoveredButtonScale){
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject6.scale.x = this.scale;
               thisbuttonObject6.scale.y = this.scale;
@@ -2813,21 +2802,21 @@ function onMouseMove( event ) {
           };
           buttonScaleUp().start();
         }
-        thisbuttonObject7.scale.set(0.3,0.3,0.3);
+        thisbuttonObject7.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
 
       } else if (buttonArrayState[6] == 1){
-        thisbuttonObject1.scale.set(0.3,0.3,0.3);
-        thisbuttonObject2.scale.set(0.3,0.3,0.3);
-        thisbuttonObject3.scale.set(0.3,0.3,0.3);
-        thisbuttonObject4.scale.set(0.3,0.3,0.3);
-        thisbuttonObject5.scale.set(0.3,0.3,0.3);
-        thisbuttonObject6.scale.set(0.3,0.3,0.3);
-        if (thisbuttonObject7.scale.x == .3){
+        thisbuttonObject1.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
+        if (thisbuttonObject7.scale.x == unhoveredButtonScale){
           var buttonScaleUp = function () {
             return new TWEEN.Tween({
-              scale: .3
+              scale: unhoveredButtonScale
             }).to ({
-              scale : .45
+              scale : unhoveredButtonScaleUp
             }, buttonAnimSpeed).onUpdate(function () {
               thisbuttonObject7.scale.x = this.scale;
               thisbuttonObject7.scale.y = this.scale;
@@ -3082,12 +3071,12 @@ function onDocumentMouseUp( event ) {
 
 
     if (buttonArrayState[0] == 1){
-      if (thisbuttonObject1.scale.x == .3){
+      if (thisbuttonObject1.scale.x == unhoveredButtonScale){
         var buttonScaleUp = function () {
           return new TWEEN.Tween({
-            scale: .3
+            scale: unhoveredButtonScale
           }).to ({
-            scale : .45
+            scale : unhoveredButtonScaleUp
           }, buttonAnimSpeed).onUpdate(function () {
             thisbuttonObject1.scale.x = this.scale;
             thisbuttonObject1.scale.y = this.scale;
@@ -3096,21 +3085,21 @@ function onDocumentMouseUp( event ) {
         };
         buttonScaleUp().start();
       }
-      thisbuttonObject2.scale.set(0.3,0.3,0.3);
-      thisbuttonObject3.scale.set(0.3,0.3,0.3);
-      thisbuttonObject4.scale.set(0.3,0.3,0.3);
-      thisbuttonObject5.scale.set(0.3,0.3,0.3);
-      thisbuttonObject6.scale.set(0.3,0.3,0.3);
-      thisbuttonObject7.scale.set(0.3,0.3,0.3);
+      thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
 
     } else if (buttonArrayState[1] == 1){
-      thisbuttonObject1.scale.set(0.3,0.3,0.3);
-      if (thisbuttonObject2.scale.x == .3){
+      thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      if (thisbuttonObject2.scale.x == unhoveredButtonScale){
         var buttonScaleUp = function () {
           return new TWEEN.Tween({
-            scale: .3
+            scale: unhoveredButtonScale
           }).to ({
-            scale : .45
+            scale : unhoveredButtonScaleUp
           }, buttonAnimSpeed).onUpdate(function () {
             thisbuttonObject2.scale.x = this.scale;
             thisbuttonObject2.scale.y = this.scale;
@@ -3119,21 +3108,21 @@ function onDocumentMouseUp( event ) {
         };
         buttonScaleUp().start();
       }
-      thisbuttonObject3.scale.set(0.3,0.3,0.3);
-      thisbuttonObject4.scale.set(0.3,0.3,0.3);
-      thisbuttonObject5.scale.set(0.3,0.3,0.3);
-      thisbuttonObject6.scale.set(0.3,0.3,0.3);
-      thisbuttonObject7.scale.set(0.3,0.3,0.3);
+      thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
 
     } else if (buttonArrayState[2] == 1){
-      thisbuttonObject1.scale.set(0.3,0.3,0.3);
-      thisbuttonObject2.scale.set(0.3,0.3,0.3);
-      if (thisbuttonObject3.scale.x == .3){
+      thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      if (thisbuttonObject3.scale.x == unhoveredButtonScale){
         var buttonScaleUp = function () {
           return new TWEEN.Tween({
-            scale: .3
+            scale: unhoveredButtonScale
           }).to ({
-            scale : .45
+            scale : unhoveredButtonScaleUp
           }, buttonAnimSpeed).onUpdate(function () {
             thisbuttonObject3.scale.x = this.scale;
             thisbuttonObject3.scale.y = this.scale;
@@ -3142,21 +3131,21 @@ function onDocumentMouseUp( event ) {
         };
         buttonScaleUp().start();
       }
-      thisbuttonObject4.scale.set(0.3,0.3,0.3);
-      thisbuttonObject5.scale.set(0.3,0.3,0.3);
-      thisbuttonObject6.scale.set(0.3,0.3,0.3);
-      thisbuttonObject7.scale.set(0.3,0.3,0.3);
+      thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
 
     } else if (buttonArrayState[3] == 1){
-      thisbuttonObject1.scale.set(0.3,0.3,0.3);
-      thisbuttonObject2.scale.set(0.3,0.3,0.3);
-      thisbuttonObject3.scale.set(0.3,0.3,0.3);
-      if (thisbuttonObject4.scale.x == .3){
+      thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      if (thisbuttonObject4.scale.x == unhoveredButtonScale){
         var buttonScaleUp = function () {
           return new TWEEN.Tween({
-            scale: .3
+            scale: unhoveredButtonScale
           }).to ({
-            scale : .45
+            scale : unhoveredButtonScaleUp
           }, buttonAnimSpeed).onUpdate(function () {
             thisbuttonObject4.scale.x = this.scale;
             thisbuttonObject4.scale.y = this.scale;
@@ -3165,21 +3154,21 @@ function onDocumentMouseUp( event ) {
         };
         buttonScaleUp().start();
       }
-      thisbuttonObject5.scale.set(0.3,0.3,0.3);
-      thisbuttonObject6.scale.set(0.3,0.3,0.3);
-      thisbuttonObject7.scale.set(0.3,0.3,0.3);
+      thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
 
     } else if (buttonArrayState[4] == 1){
-      thisbuttonObject1.scale.set(0.3,0.3,0.3);
-      thisbuttonObject2.scale.set(0.3,0.3,0.3);
-      thisbuttonObject3.scale.set(0.3,0.3,0.3);
-      thisbuttonObject4.scale.set(0.3,0.3,0.3);
-      if (thisbuttonObject5.scale.x == .3){
+      thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      if (thisbuttonObject5.scale.x == unhoveredButtonScale){
         var buttonScaleUp = function () {
           return new TWEEN.Tween({
-            scale: .3
+            scale: unhoveredButtonScale
           }).to ({
-            scale : .45
+            scale : unhoveredButtonScaleUp
           }, buttonAnimSpeed).onUpdate(function () {
             thisbuttonObject5.scale.x = this.scale;
             thisbuttonObject5.scale.y = this.scale;
@@ -3188,21 +3177,21 @@ function onDocumentMouseUp( event ) {
         };
         buttonScaleUp().start();
       }
-      thisbuttonObject6.scale.set(0.3,0.3,0.3);
-      thisbuttonObject7.scale.set(0.3,0.3,0.3);
+      thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
 
     } else if (buttonArrayState[5] == 1){
-      thisbuttonObject1.scale.set(0.3,0.3,0.3);
-      thisbuttonObject2.scale.set(0.3,0.3,0.3);
-      thisbuttonObject3.scale.set(0.3,0.3,0.3);
-      thisbuttonObject4.scale.set(0.3,0.3,0.3);
-      thisbuttonObject5.scale.set(0.3,0.3,0.3);
-      if (thisbuttonObject6.scale.x == .3){
+      thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      if (thisbuttonObject6.scale.x == unhoveredButtonScale){
         var buttonScaleUp = function () {
           return new TWEEN.Tween({
-            scale: .3
+            scale: unhoveredButtonScale
           }).to ({
-            scale : .45
+            scale : unhoveredButtonScaleUp
           }, buttonAnimSpeed).onUpdate(function () {
             thisbuttonObject6.scale.x = this.scale;
             thisbuttonObject6.scale.y = this.scale;
@@ -3211,21 +3200,21 @@ function onDocumentMouseUp( event ) {
         };
         buttonScaleUp().start();
       }
-      thisbuttonObject7.scale.set(0.3,0.3,0.3);
+      thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
 
     } else if (buttonArrayState[6] == 1){
-      thisbuttonObject1.scale.set(0.3,0.3,0.3);
-      thisbuttonObject2.scale.set(0.3,0.3,0.3);
-      thisbuttonObject3.scale.set(0.3,0.3,0.3);
-      thisbuttonObject4.scale.set(0.3,0.3,0.3);
-      thisbuttonObject5.scale.set(0.3,0.3,0.3);
-      thisbuttonObject6.scale.set(0.3,0.3,0.3);
-      if (thisbuttonObject7.scale.x == .3){
+      thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      if (thisbuttonObject7.scale.x == unhoveredButtonScale){
         var buttonScaleUp = function () {
           return new TWEEN.Tween({
-            scale: .3
+            scale: unhoveredButtonScale
           }).to ({
-            scale : .45
+            scale : unhoveredButtonScaleUp
           }, buttonAnimSpeed).onUpdate(function () {
             thisbuttonObject7.scale.x = this.scale;
             thisbuttonObject7.scale.y = this.scale;
