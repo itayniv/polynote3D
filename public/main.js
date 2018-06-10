@@ -36,6 +36,7 @@ var fontLoaded = false;
 var bgAboutButton;
 var lightBoxOn = false;
 var rollOverMesh, rollOverMaterial;
+var controls;
 
 var unhoveredButtonScale = .24;
 var unhoveredButtonScaleUp = .35;
@@ -272,7 +273,13 @@ for (var i = 0; i < width*height; i++){
 
 window.onload = function() {
   onLoad = true;
-  // console.log("onLoad",onLoad);
+  setTimeout(function(){
+  loadText();
+  loadAbout();
+  loadButtonbyOrder();
+  loadAboutButton();
+  },200);
+
   // add all the objects from array recieved from server:
   if (seqarr[0] != null){
     updatevoxels();
@@ -383,7 +390,10 @@ function init() {
   camera.position.set( 900, 1500, 1400 );
   camera.lookAt( new THREE.Vector3() );
 
-  var controls = new THREE.OrbitControls( camera );
+  controls = new THREE.OrbitControls( camera );
+  // controls.enabled = true;
+
+
 
   //Scene Setup
   scene = new THREE.Scene();
@@ -410,6 +420,7 @@ function init() {
 
   scene.add( plane );
   objects.push( plane );
+
   plane.name = 'plane';
 
   var material = new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true } );
@@ -423,9 +434,6 @@ function init() {
   objects.push(rollOverMesh);
 
   // Lights
-
-  // var ambientLight = new THREE.AmbientLight( 0x5BAFAD );
-  // scene.add( ambientLight );
 
   var hemLight = new THREE.HemisphereLight( 0xffffff, 0xF2F2D6, .5 );
   scene.add( hemLight );
@@ -511,7 +519,6 @@ function init() {
 
       scene.add( fontText );
 
-
     } );
   }
 
@@ -567,13 +574,13 @@ function init() {
       fontText.translateX( - 500 + boxSize/2 );
       fontText.rotation.x = -90 * (Math.PI / 180);;
       scene.add( fontText );
+
     } );
   }
-  loadText();
+  // loadText();
 }
 
 function loadText(){
-
   // font loader//
   var polynoteFontLoader = new THREE.FontLoader();
   polynoteFontLoader.load( 'fonts/Roboto Mono Medium_Regular.json', function ( font ) {
@@ -621,8 +628,9 @@ function loadText(){
     // console.log( fontText.name );
     fontLoaded = true;
   } );
+  // loadAboutButton();
+  // setTimeout(() => loadAboutButton(), 10);
 
-  setTimeout(() => loadAboutButton(), 10);
 }
 
 function loadAbout(){
@@ -670,7 +678,8 @@ function loadAbout(){
     appButtonObjects.push ( aboutFontText );
     // console.log( aboutFontText.name );
   } );
-  setTimeout(() => loadButtonbyOrder(), 10);
+  // loadButtonbyOrder();
+  // setTimeout(() => loadButtonbyOrder(), 10);
 }
 
 
@@ -692,9 +701,13 @@ function loadAboutButton(){
   scene.add( bgAboutButton );
   appButtonObjects.push ( bgAboutButton );
   // console.log(bgAboutButton.name);
-  setTimeout(() => loadAbout(), 12);
+   // loadAbout();
+  // setTimeout(() => loadAbout(), 12);
 
 }
+
+
+
 
 
 function loadButtonbyOrder(){
@@ -2417,6 +2430,8 @@ function onMouseMove( event ) {
   var hoverIntersects = hoverRaycaster.intersectObjects( scene.children, true );
 
   if ( (hoverIntersects.length > 0) && (onLoad == true) ) {
+    //controlls off
+    controls.enabled = false;
 
     if (hoverIntersects[0].object.name == "plane"){
       var thisOverlayObjects = scene.getObjectByName("rollOverMesh");
@@ -2888,40 +2903,6 @@ function onDocumentMouseDown( event ) {
             scene.add( tempMesh );
             objects.push(tempMesh);
 
-
-            // var tempProtoInstance = protoObject1.clone();
-            // var protoMat = new THREE.MeshBasicMaterial({ color: 0xff0000, opacity: 0.4, transparent: true, visible: true  });
-            // tempProtoInstance.material = protoMat;
-            // tempProtoInstance.position.copy(voxelPos);
-            // tempProtoInstance.position.x = 20;
-            // tempProtoInstance.name = "protoInstanceName";
-            // console.log("voxel position",tempProtoInstance.name ,voxelPos.position);
-            // tempProtoInstance.position.y = 0;
-            //
-            // // var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 2.0);
-            // var scaledObjectHeight = 90;
-            // var selectedTexture = new THREE.MeshLambertMaterial( { color: currColor , overdraw: 0.5, opacity: .1 } );
-            // tempProtoInstance.material = selectedTexture;
-
-            // var randomRotationY = Math.floor(Math.random() * 360);
-            //
-            // if (randomRotationY <= 90){
-            //   var thisRotation = 0;
-            // } else if (randomRotationY >= 90 && randomRotationY<=180){
-            //   var thisRotation = 90 * (Math.PI / 180);
-            // } else if (randomRotationY >= 180 && randomRotationY <= 270){
-            //   var thisRotation = 180 * (Math.PI / 180);
-            // } else if (randomRotationY >= 270 && randomRotationY <= 360){
-            //   var thisRotation = 270 * (Math.PI / 180);
-            // }
-            // console.log("mouseDown");
-            // tempProtoInstance.rotation.y = thisRotation;
-            // tempProtoInstance.scale.y = scaledObjectHeight;
-
-            // protoInstance.name = i + newSteps[i].instrument ;
-            // console.log( "onclick", protoInstance )
-            // scene.add( ( tempProtoInstance) );
-            // objects.push ( protoInstance );
           }
         }
       }
@@ -2929,6 +2910,8 @@ function onDocumentMouseDown( event ) {
     mousePressed = true;
     newGridState = buildArrayForGridState(listCellState, synth, currCell, voxleName);
     socket.emit('sendStep', {'Data': currCell, 'currobject': newGridState[currCell], 'currIntersect': intersect});
+  }else{
+    controls.enabled = true;
   }
 
   clickRaycaster.setFromCamera( mouse, camera );
@@ -3285,53 +3268,54 @@ function render() {
 
     thisbuttonObject1.position.copy( camera.position );
     thisbuttonObject1.rotation.copy( camera.rotation );
+    // console.log("object", thisbuttonObject1.rotation.x);
+    // console.log("camera", camera.rotation.x);
     thisbuttonObject1.translateX( -180 );
     thisbuttonObject1.translateZ( - 1000 );
-    thisbuttonObject1.translateY( + 280 );
+    thisbuttonObject1.translateY( + 270 );
     thisbuttonObject1.updateMatrix();
-    //TODO change pos
-    // let delta_rot = 0.02
+
     thisbuttonObject2.position.copy( camera.position );
     thisbuttonObject2.rotation.copy( camera.rotation );
     thisbuttonObject2.updateMatrix();
     thisbuttonObject2.translateX( -120);
     thisbuttonObject2.translateZ( - 1000 );
-    thisbuttonObject2.translateY( + 280 );
+    thisbuttonObject2.translateY( + 270 );
 
     thisbuttonObject3.position.copy( camera.position );
     thisbuttonObject3.rotation.copy( camera.rotation );
     thisbuttonObject3.updateMatrix();
     thisbuttonObject3.translateX( -60 );
     thisbuttonObject3.translateZ( - 1000 );
-    thisbuttonObject3.translateY( + 280 );
+    thisbuttonObject3.translateY( + 270 );
 
     thisbuttonObject4.position.copy( camera.position );
     thisbuttonObject4.rotation.copy( camera.rotation );
     thisbuttonObject4.updateMatrix();
     thisbuttonObject4.translateX( 0 );
     thisbuttonObject4.translateZ( - 1000 );
-    thisbuttonObject4.translateY( + 280 );
+    thisbuttonObject4.translateY( + 270 );
 
     thisbuttonObject5.position.copy( camera.position );
     thisbuttonObject5.rotation.copy( camera.rotation );
     thisbuttonObject5.updateMatrix();
     thisbuttonObject5.translateX( 60 );
     thisbuttonObject5.translateZ( - 1000 );
-    thisbuttonObject5.translateY( + 280 );
+    thisbuttonObject5.translateY( + 270 );
 
     thisbuttonObject6.position.copy( camera.position );
     thisbuttonObject6.rotation.copy( camera.rotation );
     thisbuttonObject6.updateMatrix();
     thisbuttonObject6.translateX( 120 );
     thisbuttonObject6.translateZ( - 1000 );
-    thisbuttonObject6.translateY( + 280 );
+    thisbuttonObject6.translateY( + 270 );
 
     thisbuttonObject7.position.copy( camera.position );
     thisbuttonObject7.rotation.copy( camera.rotation );
     thisbuttonObject7.updateMatrix();
     thisbuttonObject7.translateX( 180 );
     thisbuttonObject7.translateZ( - 1000 );
-    thisbuttonObject7.translateY( + 280 );
+    thisbuttonObject7.translateY( + 270 );
 
     thisObjectName08.position.copy( camera.position );
     thisObjectName08.rotation.copy( camera.rotation );
