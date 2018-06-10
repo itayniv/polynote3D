@@ -32,7 +32,7 @@ var height = 16;
 var seqarraystate = [];
 
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 80;
 
 
 function init(){
@@ -86,8 +86,8 @@ app.get('/GetGridSize', function(req,res){
   res.send(obj)
 });
 
-var server = app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+var server = app.listen(80, function () {
+  console.log('Example app listening on port 80!')
 });
 
 var sockets = io(server);
