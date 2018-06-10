@@ -38,8 +38,8 @@ var lightBoxOn = false;
 var rollOverMesh, rollOverMaterial;
 var controls;
 
-var unhoveredButtonScale = .24;
-var unhoveredButtonScaleUp = .35;
+var unhoveredButtonScale = .26;
+var unhoveredButtonScaleUp = .38;
 
 var mouseDownEvent = false;
 
@@ -274,10 +274,10 @@ for (var i = 0; i < width*height; i++){
 window.onload = function() {
   onLoad = true;
   setTimeout(function(){
-  loadText();
-  loadAbout();
-  loadButtonbyOrder();
-  loadAboutButton();
+    loadText();
+    loadAbout();
+    loadButtonbyOrder();
+    loadAboutButton();
   },200);
 
   // add all the objects from array recieved from server:
@@ -391,9 +391,6 @@ function init() {
   camera.lookAt( new THREE.Vector3() );
 
   controls = new THREE.OrbitControls( camera );
-  // controls.enabled = true;
-
-
 
   //Scene Setup
   scene = new THREE.Scene();
@@ -427,10 +424,10 @@ function init() {
 
 
   var rollOverGeo = new THREE.BoxGeometry( boxSize, 2, boxSize );
-	rollOverMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, opacity: 0.07, transparent: true, visible: false  });
-	rollOverMesh = new THREE.Mesh( rollOverGeo, rollOverMaterial );
+  rollOverMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, opacity: 0.07, transparent: true, visible: false  });
+  rollOverMesh = new THREE.Mesh( rollOverGeo, rollOverMaterial );
   rollOverMesh.name = 'rollOverMesh';
-	scene.add( rollOverMesh );
+  scene.add( rollOverMesh );
   objects.push(rollOverMesh);
 
   // Lights
@@ -701,7 +698,7 @@ function loadAboutButton(){
   scene.add( bgAboutButton );
   appButtonObjects.push ( bgAboutButton );
   // console.log(bgAboutButton.name);
-   // loadAbout();
+  // loadAbout();
   // setTimeout(() => loadAbout(), 12);
 
 }
@@ -2430,13 +2427,12 @@ function onMouseMove( event ) {
   var hoverIntersects = hoverRaycaster.intersectObjects( scene.children, true );
 
   if ( (hoverIntersects.length > 0) && (onLoad == true) ) {
-    //controlls off
-    controls.enabled = false;
 
     if (hoverIntersects[0].object.name == "plane"){
       var thisOverlayObjects = scene.getObjectByName("rollOverMesh");
       var thisRollOverMaterial = new THREE.MeshBasicMaterial({ color: currColor, opacity: 0.05, transparent: true, visible: true  });
       thisOverlayObjects.material = thisRollOverMaterial;
+
     }
 
     if ( hoverIntersects[ 0 ] != null){
@@ -2852,17 +2848,13 @@ function onDocumentMouseDown( event ) {
   event.preventDefault();
 
   note1_1(0.0001);
-
   currCell = null;
 
   //Intersect check
 
   intersectObjects(event);
   if ( intersects.length > 0 ) {
-
     //assign intersect the first var
-    // intersect = intersects[ intersects.length-1 ];
-
     intersect = intersects[ intersects.length - 1 ];
     // console.log("intersects", intersects)
     // console.log("mousedown");
@@ -2873,8 +2865,12 @@ function onDocumentMouseDown( event ) {
     //Number of the cell pressed
     currCell = (width*pressedPointZ) + pressedPointX;
     // If the intersected object is the ground
-    if ( intersect.object.name == "plane" ) {
 
+    //disable controls when over an object
+    controls.enabled = false;
+
+
+    if ( intersect.object.name == "plane" ) {
       if (intersect != null){
         if (currCell!= null){
           var cubeGeometry = new THREE.BoxGeometry( boxSize, boxSize, boxSize );
@@ -2888,12 +2884,6 @@ function onDocumentMouseDown( event ) {
             voxelPos.position.divideScalar( boxSize ).floor().multiplyScalar( boxSize ).addScalar( boxSize/2 );
             listCellState[currCell].voxelPos = voxelPos.position.divideScalar( boxSize ).floor().multiplyScalar( boxSize ).addScalar( boxSize/2 );
 
-            //TODO Temp shape
-
-            //////////////////////
-            ////////add obj///////
-            //////////////////////
-
             var tempGeo = new THREE.BoxGeometry( boxSize, 0, boxSize );
             var tempMaterial = new THREE.MeshBasicMaterial({ color: currColor, opacity: 0.2, transparent: true, visible: true  });
             var tempMesh = new THREE.Mesh( tempGeo, tempMaterial );
@@ -2902,16 +2892,16 @@ function onDocumentMouseDown( event ) {
             tempMesh.position.y = 0;
             scene.add( tempMesh );
             objects.push(tempMesh);
-
           }
         }
       }
     }
+
+
+
     mousePressed = true;
     newGridState = buildArrayForGridState(listCellState, synth, currCell, voxleName);
     socket.emit('sendStep', {'Data': currCell, 'currobject': newGridState[currCell], 'currIntersect': intersect});
-  }else{
-    controls.enabled = true;
   }
 
   clickRaycaster.setFromCamera( mouse, camera );
@@ -2953,11 +2943,12 @@ function onDocumentMouseDown( event ) {
       CLICK_INTERSECTED = clickIntersects[ 0 ].object;
       //synthbutton
       if( CLICK_INTERSECTED.name == "noteButtonObject1") {
-        // console.log("noteButtonObject1");
         buttonArrayState = [1,0,0,0,0,0,0];
         userNo = 1;
         synth = 'red';
         currColor = playerColorArray[0];
+        // console.log("noteButtonObject1");
+
       } else if ( CLICK_INTERSECTED.name == "noteButtonObject2" ){
         buttonArrayState = [0,1,0,0,0,0,0];
         userNo = 2;
@@ -2979,7 +2970,6 @@ function onDocumentMouseDown( event ) {
         currColor = playerColorArray[3];
         // console.log("noteButtonObject4");
 
-
       } else if ( CLICK_INTERSECTED.name == "noteButtonObject5" ){
         buttonArrayState = [0,0,0,0,1,0,0];
         userNo = 5;
@@ -2987,13 +2977,12 @@ function onDocumentMouseDown( event ) {
         currColor = playerColorArray[4];
         // console.log("noteButtonObject5");
 
-
       } else if ( CLICK_INTERSECTED.name == "noteButtonObject6" ){
         buttonArrayState = [0,0,0,0,0,1,0];
         userNo = 6;
         synth = 'salmon';
         currColor = playerColorArray[5];
-        // console.log("noteButtonObject6", synth);
+        // console.log("noteButtonObject6");
 
       } else if ( CLICK_INTERSECTED.name == "noteButtonObject7" ){
         buttonArrayState = [0,0,0,0,0,0,1];
@@ -3003,7 +2992,7 @@ function onDocumentMouseDown( event ) {
         // console.log("noteButtonObject7");
 
       } else if ( CLICK_INTERSECTED.name == "aboutBG" ){
-        //TODO trigger lightbox
+
         if (  lightBoxOn == false){
           lightBoxOn = true;
           showBox();
@@ -3020,6 +3009,10 @@ function onDocumentMouseDown( event ) {
 
 function onDocumentMouseUp( event ) {
   event.preventDefault();
+
+
+  //enabling controls when not over an object
+  controls.enabled = true;
 
   //delete temp Mesh
   var tempVoxelToRemove = scene.getObjectByName("tempMesh");
