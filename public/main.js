@@ -810,7 +810,7 @@ function updatevoxels(newSteps) {
           protoInstance.position.copy(newSteps[i].voxelPos);
           protoInstance.position.y = 0;
 
-          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 2.0);
+          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 1.0);
           var selectedTexture = new THREE.MeshLambertMaterial( { color: newSteps[i].color , overdraw: 0.5, opacity: .1 } );
           protoInstance.material = selectedTexture;
 
@@ -861,7 +861,7 @@ function updatevoxels(newSteps) {
           protoInstance.position.copy(newSteps[i].voxelPos);
           protoInstance.position.y = 0;
 
-          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 2.0);
+          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 1.0);
           var selectedTexture = new THREE.MeshLambertMaterial( { color: newSteps[i].color , overdraw: 0.5, opacity: .1 } );
           protoInstance.material = selectedTexture;
 
@@ -910,7 +910,7 @@ function updatevoxels(newSteps) {
           protoInstance.position.copy(newSteps[i].voxelPos);
           protoInstance.position.y = 0;
 
-          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 2.0);
+          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 1.0);
           var selectedTexture = new THREE.MeshLambertMaterial( { color: newSteps[i].color , overdraw: 0.5, opacity: .1 } );
           protoInstance.material = selectedTexture;
 
@@ -959,7 +959,7 @@ function updatevoxels(newSteps) {
           protoInstance.position.copy(newSteps[i].voxelPos);
           protoInstance.position.y = 0;
 
-          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 2.0);
+          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 1.0);
           var selectedTexture = new THREE.MeshLambertMaterial( { color: newSteps[i].color , overdraw: 0.5, opacity: .1 } );
           protoInstance.material = selectedTexture;
 
@@ -1008,7 +1008,7 @@ function updatevoxels(newSteps) {
           protoInstance.position.copy(newSteps[i].voxelPos);
           protoInstance.position.y = 0;
 
-          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 2.0);
+          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 1.0);
           var selectedTexture = new THREE.MeshLambertMaterial( { color: newSteps[i].color , overdraw: 0.5, opacity: .1 } );
           protoInstance.material = selectedTexture;
 
@@ -1056,7 +1056,7 @@ function updatevoxels(newSteps) {
           protoInstance.position.copy(newSteps[i].voxelPos);
           protoInstance.position.y = 0;
 
-          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 2.0);
+          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 1.0);
           var selectedTexture = new THREE.MeshLambertMaterial( { color: newSteps[i].color , overdraw: 0.5, opacity: .1 } );
           protoInstance.material = selectedTexture;
 
@@ -1104,7 +1104,7 @@ function updatevoxels(newSteps) {
           protoInstance.position.copy(newSteps[i].voxelPos);
           protoInstance.position.y = 0;
 
-          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 2.0);
+          var scaledObjectHeight = map_range(newSteps[i].gesture.time, 0.0, 10.0, 0.4, 1.0);
           var selectedTexture = new THREE.MeshLambertMaterial( { color: newSteps[i].color , overdraw: 0.5, opacity: .1 } );
           protoInstance.material = selectedTexture;
 
@@ -1228,7 +1228,6 @@ if (checkId != true){
 socket.on('currplayer', function(incomingTick){
   globalTick = incomingTick;
   //the playerhead animation
-
   for(var i=0; i < width;i++){
     pattern01[i] = 0;
   }
@@ -2381,7 +2380,6 @@ socket.on('currplayer', function(incomingTick){
 // socket.on('currTime', function(clientCurrTimeSec, clientCurrTimeMin){
 //   currsec = clientCurrTimeSec;
 //   currmin = clientCurrTimeMin;
-//
 //   document.getElementById("p4").innerHTML = currmin +':'+ currsec +  ' seconds until session resets';
 //
 // });
@@ -3335,8 +3333,8 @@ function render() {
 
   if (mousePressed == true){
     noteCounter = noteCounter + 1;
-    if (noteCounter >= 60){
-      noteCounter = 60;
+    if (noteCounter >= 70){
+      noteCounter = 70;
     }
 
     if (scene.getObjectByName( "tempMesh" ) != null){
