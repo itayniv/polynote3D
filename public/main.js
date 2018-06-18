@@ -37,6 +37,9 @@ var bgAboutButton;
 var lightBoxOn = false;
 var rollOverMesh, rollOverMaterial;
 var controls;
+var whiteSlate;
+var disableWhite = false;
+var number = 100.0;
 
 var unhoveredButtonScale = .26;
 var unhoveredButtonScaleUp = .38;
@@ -70,6 +73,8 @@ var cameraPositionX = 200;
 var stageSize = 1000;
 
 var boxSize = 62.5;
+var boxParams = { opacity: 1.0 };
+
 
 var intersects;
 var intersect;
@@ -151,7 +156,7 @@ function showBox(){
 
 }
 function hideBox(){
-  document.getElementById("aboutbox").style.display = "none";
+  // document.getElementById("aboutbox").style.display = "none";
 }
 
 
@@ -278,6 +283,8 @@ window.onload = function() {
     loadAbout();
     loadButtonbyOrder();
     loadAboutButton();
+    disableWhite = true;
+
   },200);
 
   // add all the objects from array recieved from server:
@@ -466,9 +473,21 @@ function init() {
   window.addEventListener( 'resize', onWindowResize, false );
   document.addEventListener( 'mousemove', onMouseMove, false );
 
+  // solid layer
+
+  var geometry = new THREE.BoxBufferGeometry( 2000, 2000, 2000 );
+  var whiteMaterial= new THREE.MeshBasicMaterial( { opacity: boxParams.opacity, color: (0xffffff), wireframe: false, transparent: true } );
+  whiteSlate = new THREE.Mesh( geometry, whiteMaterial );
+  whiteSlate.transparent = true;
+  whiteSlate.position.x = 400;
+  whiteSlate.position.y = 400;
+  whiteSlate.position.z = 400;
+
+
+
+  scene.add( whiteSlate );
+
   //end load function
-
-
 
   for (let i = 0; i < 16; i ++ ){
     var polyFontLoader = new THREE.FontLoader();
@@ -574,7 +593,8 @@ function init() {
 
     } );
   }
-  // loadText();
+
+
 }
 
 function loadText(){
@@ -1266,6 +1286,7 @@ socket.on('currplayer', function(incomingTick){
     .start();
     return  currRotation;
   }
+
 
 
 
@@ -2992,13 +3013,13 @@ function onDocumentMouseDown( event ) {
       } else if ( CLICK_INTERSECTED.name == "aboutBG" ){
 
         if (  lightBoxOn == false){
-          lightBoxOn = true;
+          // lightBoxOn = true;
           showBox();
         }
       } else {
         if ( lightBoxOn == true ){
           hideBox();
-          lightBoxOn = false;
+          // lightBoxOn = false;
         }
       }
     }
@@ -3223,6 +3244,21 @@ function onDocumentMouseUp( event ) {
 // render everything
 function render() {
   requestAnimationFrame(render);
+
+
+if (whiteSlate != null){
+  whiteSlate.lookAt( camera.position );
+  if ( (onLoad == true) && (number>.02 )){
+    number = number * .7;
+    if(number< .025 ){
+      scene.remove( whiteSlate );
+    }
+  }
+  whiteSlate.material.opacity = (number);
+}
+
+
+
 
   // button update position
 
