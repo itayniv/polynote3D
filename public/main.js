@@ -40,6 +40,7 @@ var controls;
 var whiteSlate;
 var disableWhite = false;
 var number = 100.0;
+var tempMeshOn = false;
 
 var unhoveredButtonScale = .26;
 var unhoveredButtonScaleUp = .38;
@@ -156,7 +157,7 @@ function showBox(){
 
 }
 function hideBox(){
-  // document.getElementById("aboutbox").style.display = "none";
+  document.getElementById("aboutbox").style.display = "none";
 }
 
 
@@ -2430,7 +2431,7 @@ function intersectObjects(event){
   }
   //Raycaster magic!
   raycaster.setFromCamera( mouse, camera );
-
+  console.log("intersecting");
   // the intersects object function lets it know what object is hit
   intersects = raycaster.intersectObjects( objects );
 }
@@ -2868,11 +2869,14 @@ function onDocumentMouseDown( event ) {
 
   note1_1(0.0001);
   currCell = null;
-
   //Intersect check
+  console.log("mouseDown_before")
 
   intersectObjects(event);
+  console.log(intersects.length);
   if ( intersects.length > 0 ) {
+    console.log("mouseDown_after")
+
     //assign intersect the first var
     intersect = intersects[ intersects.length - 1 ];
     // console.log("intersects", intersects)
@@ -2908,9 +2912,11 @@ function onDocumentMouseDown( event ) {
             var tempMesh = new THREE.Mesh( tempGeo, tempMaterial );
             tempMesh.name = 'tempMesh';
             tempMesh.position.copy(listCellState[currCell].voxelPos);
+            tempMeshOn = true;
             tempMesh.position.y = 0;
             scene.add( tempMesh );
             objects.push(tempMesh);
+
           }
         }
       }
@@ -3013,13 +3019,13 @@ function onDocumentMouseDown( event ) {
       } else if ( CLICK_INTERSECTED.name == "aboutBG" ){
 
         if (  lightBoxOn == false){
-          // lightBoxOn = true;
+          lightBoxOn = true;
           showBox();
         }
       } else {
         if ( lightBoxOn == true ){
-          hideBox();
-          // lightBoxOn = false;
+          // hideBox();
+          lightBoxOn = false;
         }
       }
     }
@@ -3035,13 +3041,19 @@ function onDocumentMouseUp( event ) {
 
   //delete temp Mesh
   var tempVoxelToRemove = scene.getObjectByName("tempMesh");
-  scene.remove( tempVoxelToRemove );
-  objects.splice( objects.indexOf( tempVoxelToRemove ), 1 );
+  if (tempMeshOn == true){
+    if(tempVoxelToRemove.name == "tempMesh"){
+      scene.remove( tempVoxelToRemove );
+      objects.splice( objects.indexOf( tempVoxelToRemove ), 1 );
+    }
+    tempMeshOn = false;
+
+  }
+
 
 
   ///button animation///
   if (controlButtonObjects != null){
-
     //Get button objects by name
     var thisObjectName1 = controlButtonObjects[0].name;
     var thisbuttonObject1 = scene.getObjectByName(thisObjectName1);
