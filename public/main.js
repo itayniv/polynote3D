@@ -154,10 +154,11 @@ function buildArrayForGridState(listCellState, synth, currCell, voxleName){
 
 function showBox(){
   document.getElementById("aboutbox").style.display = "block";
-
+  lightBoxOn = true;
 }
 function hideBox(){
   document.getElementById("aboutbox").style.display = "none";
+  lightBoxOn = false;
 }
 
 
@@ -244,7 +245,6 @@ $.ajax({
       buttonArrayState = [0,0,0,0,0,0,1];
     }
 
-    // console.log('synth', synth);
     socket.emit('login',{userId: synth});
 
   }
@@ -308,7 +308,6 @@ function loadModels(loadingManager=null){
     return;
 
   }
-  // console.log("what");
   var loader = new THREE.OBJLoader( loadingManager );
   loader.load( 'models/tower06.obj', function ( noteObject ) {
     noteObject.traverse( function ( child ) {
@@ -548,8 +547,6 @@ function init() {
       var fontText;
       var textShape = new THREE.BufferGeometry();
 
-
-      // console.log(i%4);
       if (i%4 == 0){
         var color = 0x717272;
       } else {
@@ -643,11 +640,8 @@ function loadText(){
     fontText.name = 'polynote';
     scene.add( fontText );
     appButtonObjects.push ( fontText );
-    // console.log( fontText.name );
     fontLoaded = true;
   } );
-  // loadAboutButton();
-  // setTimeout(() => loadAboutButton(), 10);
 
 }
 
@@ -694,7 +688,6 @@ function loadAbout(){
     aboutFontText.name = 'about';
     scene.add( aboutFontText );
     appButtonObjects.push ( aboutFontText );
-    // console.log( aboutFontText.name );
   } );
   // loadButtonbyOrder();
   // setTimeout(() => loadButtonbyOrder(), 10);
@@ -714,14 +707,9 @@ function loadAboutButton(){
   bgAboutButton.scale.z = .001;
   bgAboutButton.scale.x = .3;
   bgAboutButton.scale.y = .15;
-  //TODO about
   bgAboutButton.name = 'aboutBG';
   scene.add( bgAboutButton );
   appButtonObjects.push ( bgAboutButton );
-  // console.log(bgAboutButton.name);
-  // loadAbout();
-  // setTimeout(() => loadAbout(), 12);
-
 }
 
 
@@ -2431,7 +2419,6 @@ function intersectObjects(event){
   }
   //Raycaster magic!
   raycaster.setFromCamera( mouse, camera );
-  console.log("intersecting");
   // the intersects object function lets it know what object is hit
   intersects = raycaster.intersectObjects( objects );
 }
@@ -2867,165 +2854,165 @@ function onMouseMove( event ) {
 function onDocumentMouseDown( event ) {
   event.preventDefault();
 
-  note1_1(0.0001);
-  currCell = null;
-  //Intersect check
-  console.log("mouseDown_before")
+  if (lightBoxOn == false){
+    note1_1(0.0001);
+    currCell = null;
+    //Intersect check
 
-  intersectObjects(event);
-  console.log(intersects.length);
-  if ( intersects.length > 0 ) {
-    console.log("mouseDown_after")
+    intersectObjects(event);
+    if ( intersects.length > 0 ) {
 
-    //assign intersect the first var
-    intersect = intersects[ intersects.length - 1 ];
-    // console.log("intersects", intersects)
-    // console.log("mousedown");
-    //Figure out what is the Cell X and Cell Z location of the event
-    pressedPointX = Math.floor(8+intersect.point.x/boxSize);
-    pressedPointZ = Math.floor(8+intersect.point.z/boxSize);
+      //assign intersect the first var
+      intersect = intersects[ intersects.length - 1 ];
+      // console.log("intersects", intersects)
+      // console.log("mousedown");
+      //Figure out what is the Cell X and Cell Z location of the event
+      pressedPointX = Math.floor(8+intersect.point.x/boxSize);
+      pressedPointZ = Math.floor(8+intersect.point.z/boxSize);
 
-    //Number of the cell pressed
-    currCell = (width*pressedPointZ) + pressedPointX;
-    // If the intersected object is the ground
+      //Number of the cell pressed
+      currCell = (width*pressedPointZ) + pressedPointX;
+      // If the intersected object is the ground
 
-    //disable controls when over an object
-    controls.enabled = false;
+      //disable controls when over an object
+      controls.enabled = false;
 
 
-    if ( intersect.object.name == "plane" ) {
-      if (intersect != null){
-        if (currCell!= null){
-          var cubeGeometry = new THREE.BoxGeometry( boxSize, boxSize, boxSize );
-          var cubeMaterial = new THREE.MeshLambertMaterial( { color: currColor , overdraw: 0.5 } );
+      if ( intersect.object.name == "plane" ) {
+        if (intersect != null){
+          if (currCell!= null){
+            var cubeGeometry = new THREE.BoxGeometry( boxSize, boxSize, boxSize );
+            var cubeMaterial = new THREE.MeshLambertMaterial( { color: currColor , overdraw: 0.5 } );
 
-          var voxelPos = new THREE.Mesh( cubeGeometry, cubeMaterial );
+            var voxelPos = new THREE.Mesh( cubeGeometry, cubeMaterial );
 
-          if (intersect != null){
-            voxelPos.position.copy( intersect.point ).add( intersect.face.normal );
-            // the snapped mouse position for a box
-            voxelPos.position.divideScalar( boxSize ).floor().multiplyScalar( boxSize ).addScalar( boxSize/2 );
-            listCellState[currCell].voxelPos = voxelPos.position.divideScalar( boxSize ).floor().multiplyScalar( boxSize ).addScalar( boxSize/2 );
+            if (intersect != null){
+              voxelPos.position.copy( intersect.point ).add( intersect.face.normal );
+              // the snapped mouse position for a box
+              voxelPos.position.divideScalar( boxSize ).floor().multiplyScalar( boxSize ).addScalar( boxSize/2 );
+              listCellState[currCell].voxelPos = voxelPos.position.divideScalar( boxSize ).floor().multiplyScalar( boxSize ).addScalar( boxSize/2 );
 
-            var tempGeo = new THREE.BoxGeometry( boxSize, 0, boxSize );
-            var tempMaterial = new THREE.MeshBasicMaterial({ color: currColor, opacity: 0.2, transparent: true, visible: true  });
-            var tempMesh = new THREE.Mesh( tempGeo, tempMaterial );
-            tempMesh.name = 'tempMesh';
-            tempMesh.position.copy(listCellState[currCell].voxelPos);
-            tempMeshOn = true;
-            tempMesh.position.y = 0;
-            scene.add( tempMesh );
-            objects.push(tempMesh);
+              var tempGeo = new THREE.BoxGeometry( boxSize, 0, boxSize );
+              var tempMaterial = new THREE.MeshBasicMaterial({ color: currColor, opacity: 0.2, transparent: true, visible: true  });
+              var tempMesh = new THREE.Mesh( tempGeo, tempMaterial );
+              tempMesh.name = 'tempMesh';
+              tempMesh.position.copy(listCellState[currCell].voxelPos);
+              tempMeshOn = true;
+              tempMesh.position.y = 0;
+              scene.add( tempMesh );
+              objects.push(tempMesh);
 
+            }
           }
         }
       }
+
+
+
+      mousePressed = true;
+      newGridState = buildArrayForGridState(listCellState, synth, currCell, voxleName);
+      socket.emit('sendStep', {'Data': currCell, 'currobject': newGridState[currCell], 'currIntersect': intersect});
     }
 
+    clickRaycaster.setFromCamera( mouse, camera );
+    var clickIntersects = clickRaycaster.intersectObjects( scene.children, true );
+
+    if ( clickIntersects.length > 0 ) {
+
+      if (onLoad == true){
+        //Get button objects by name
+        var thisButtonObjectName1 = controlButtonObjects[0].name;
+        var thisbuttonObject1 = scene.getObjectByName(thisButtonObjectName1);
+
+        var thisButtonObjectName2 = controlButtonObjects[1].name;
+        var thisbuttonObject2 = scene.getObjectByName(thisButtonObjectName2);
+
+        var thisButtonObjectName3 = controlButtonObjects[2].name;
+        var thisbuttonObject3 = scene.getObjectByName(thisButtonObjectName3);
+
+        var thisButtonObjectName4 = controlButtonObjects[3].name;
+        var thisbuttonObject4 = scene.getObjectByName(thisButtonObjectName4);
+
+        var thisButtonObjectName5 = controlButtonObjects[4].name;
+        var thisbuttonObject5 = scene.getObjectByName(thisButtonObjectName5);
+
+        var thisButtonObjectName6 = controlButtonObjects[5].name;
+        var thisbuttonObject6 = scene.getObjectByName(thisButtonObjectName6);
+
+        var thisButtonObjectName7 = controlButtonObjects[6].name;
+        var thisbuttonObject7 = scene.getObjectByName(thisButtonObjectName7);
+
+        var thisButtonObjectName9 = appButtonObjects[0].name;
+        var thisbuttonObject9 = scene.getObjectByName(thisButtonObjectName9);
+        //TODO click
+      }
 
 
-    mousePressed = true;
-    newGridState = buildArrayForGridState(listCellState, synth, currCell, voxleName);
-    socket.emit('sendStep', {'Data': currCell, 'currobject': newGridState[currCell], 'currIntersect': intersect});
-  }
+      if ( CLICK_INTERSECTED != clickIntersects[ 0 ].object ) {
+        //get the intersected button
+        CLICK_INTERSECTED = clickIntersects[ 0 ].object;
+        //synthbutton
+        if( CLICK_INTERSECTED.name == "noteButtonObject1") {
+          buttonArrayState = [1,0,0,0,0,0,0];
+          userNo = 1;
+          synth = 'red';
+          currColor = playerColorArray[0];
+          // console.log("noteButtonObject1");
 
-  clickRaycaster.setFromCamera( mouse, camera );
-  var clickIntersects = clickRaycaster.intersectObjects( scene.children, true );
+        } else if ( CLICK_INTERSECTED.name == "noteButtonObject2" ){
+          buttonArrayState = [0,1,0,0,0,0,0];
+          userNo = 2;
+          synth = 'yellow';
+          currColor = playerColorArray[1];
+          // console.log("noteButtonObject2");
 
-  if ( clickIntersects.length > 0 ) {
+        } else if ( CLICK_INTERSECTED.name == "noteButtonObject3" ){
+          buttonArrayState = [0,0,1,0,0,0,0];
+          userNo = 3;
+          synth = 'purple';
+          currColor = playerColorArray[2];
+          // console.log("noteButtonObject3");
 
-    if (onLoad == true){
-      //Get button objects by name
-      var thisButtonObjectName1 = controlButtonObjects[0].name;
-      var thisbuttonObject1 = scene.getObjectByName(thisButtonObjectName1);
+        } else if ( CLICK_INTERSECTED.name == "noteButtonObject4" ){
+          buttonArrayState = [0,0,0,1,0,0,0];
+          userNo = 4;
+          synth = 'gold';
+          currColor = playerColorArray[3];
+          // console.log("noteButtonObject4");
 
-      var thisButtonObjectName2 = controlButtonObjects[1].name;
-      var thisbuttonObject2 = scene.getObjectByName(thisButtonObjectName2);
+        } else if ( CLICK_INTERSECTED.name == "noteButtonObject5" ){
+          buttonArrayState = [0,0,0,0,1,0,0];
+          userNo = 5;
+          synth = 'green';
+          currColor = playerColorArray[4];
+          // console.log("noteButtonObject5");
 
-      var thisButtonObjectName3 = controlButtonObjects[2].name;
-      var thisbuttonObject3 = scene.getObjectByName(thisButtonObjectName3);
+        } else if ( CLICK_INTERSECTED.name == "noteButtonObject6" ){
+          buttonArrayState = [0,0,0,0,0,1,0];
+          userNo = 6;
+          synth = 'salmon';
+          currColor = playerColorArray[5];
+          // console.log("noteButtonObject6");
 
-      var thisButtonObjectName4 = controlButtonObjects[3].name;
-      var thisbuttonObject4 = scene.getObjectByName(thisButtonObjectName4);
+        } else if ( CLICK_INTERSECTED.name == "noteButtonObject7" ){
+          buttonArrayState = [0,0,0,0,0,0,1];
+          userNo = 7;
+          synth = 'blue';
+          currColor = playerColorArray[6];
+          // console.log("noteButtonObject7");
 
-      var thisButtonObjectName5 = controlButtonObjects[4].name;
-      var thisbuttonObject5 = scene.getObjectByName(thisButtonObjectName5);
+        } else if ( CLICK_INTERSECTED.name == "aboutBG" ){
 
-      var thisButtonObjectName6 = controlButtonObjects[5].name;
-      var thisbuttonObject6 = scene.getObjectByName(thisButtonObjectName6);
+          if (  lightBoxOn == false){
+            setTimeout(function(){
+              showBox();
+            },100);
 
-      var thisButtonObjectName7 = controlButtonObjects[6].name;
-      var thisbuttonObject7 = scene.getObjectByName(thisButtonObjectName7);
-
-      var thisButtonObjectName9 = appButtonObjects[0].name;
-      var thisbuttonObject9 = scene.getObjectByName(thisButtonObjectName9);
-      //TODO click
-    }
-
-
-    if ( CLICK_INTERSECTED != clickIntersects[ 0 ].object ) {
-      //get the intersected button
-      CLICK_INTERSECTED = clickIntersects[ 0 ].object;
-      //synthbutton
-      if( CLICK_INTERSECTED.name == "noteButtonObject1") {
-        buttonArrayState = [1,0,0,0,0,0,0];
-        userNo = 1;
-        synth = 'red';
-        currColor = playerColorArray[0];
-        // console.log("noteButtonObject1");
-
-      } else if ( CLICK_INTERSECTED.name == "noteButtonObject2" ){
-        buttonArrayState = [0,1,0,0,0,0,0];
-        userNo = 2;
-        synth = 'yellow';
-        currColor = playerColorArray[1];
-        // console.log("noteButtonObject2");
-
-      } else if ( CLICK_INTERSECTED.name == "noteButtonObject3" ){
-        buttonArrayState = [0,0,1,0,0,0,0];
-        userNo = 3;
-        synth = 'purple';
-        currColor = playerColorArray[2];
-        // console.log("noteButtonObject3");
-
-      } else if ( CLICK_INTERSECTED.name == "noteButtonObject4" ){
-        buttonArrayState = [0,0,0,1,0,0,0];
-        userNo = 4;
-        synth = 'gold';
-        currColor = playerColorArray[3];
-        // console.log("noteButtonObject4");
-
-      } else if ( CLICK_INTERSECTED.name == "noteButtonObject5" ){
-        buttonArrayState = [0,0,0,0,1,0,0];
-        userNo = 5;
-        synth = 'green';
-        currColor = playerColorArray[4];
-        // console.log("noteButtonObject5");
-
-      } else if ( CLICK_INTERSECTED.name == "noteButtonObject6" ){
-        buttonArrayState = [0,0,0,0,0,1,0];
-        userNo = 6;
-        synth = 'salmon';
-        currColor = playerColorArray[5];
-        // console.log("noteButtonObject6");
-
-      } else if ( CLICK_INTERSECTED.name == "noteButtonObject7" ){
-        buttonArrayState = [0,0,0,0,0,0,1];
-        userNo = 7;
-        synth = 'blue';
-        currColor = playerColorArray[6];
-        // console.log("noteButtonObject7");
-
-      } else if ( CLICK_INTERSECTED.name == "aboutBG" ){
-
-        if (  lightBoxOn == false){
-          lightBoxOn = true;
-          showBox();
-        }
-      } else {
-        if ( lightBoxOn == true ){
-          // hideBox();
-          lightBoxOn = false;
+          }
+        } else {
+          if ( lightBoxOn == true ){
+            hideBox();
+          }
         }
       }
     }
@@ -3033,221 +3020,222 @@ function onDocumentMouseDown( event ) {
 }
 
 function onDocumentMouseUp( event ) {
-  event.preventDefault();
+  // event.preventDefault();
 
 
   //enabling controls when not over an object
   controls.enabled = true;
 
-  //delete temp Mesh
-  var tempVoxelToRemove = scene.getObjectByName("tempMesh");
-  if (tempMeshOn == true){
-    if(tempVoxelToRemove.name == "tempMesh"){
-      scene.remove( tempVoxelToRemove );
-      objects.splice( objects.indexOf( tempVoxelToRemove ), 1 );
+
+  if (lightBoxOn == false){
+    //delete temp Mesh
+    var tempVoxelToRemove = scene.getObjectByName("tempMesh");
+    if (tempMeshOn == true){
+      if(tempVoxelToRemove.name == "tempMesh"){
+        scene.remove( tempVoxelToRemove );
+        objects.splice( objects.indexOf( tempVoxelToRemove ), 1 );
+      }
+      tempMeshOn = false;
     }
-    tempMeshOn = false;
 
-  }
+    ///button animation///
+    if (controlButtonObjects != null){
+      //Get button objects by name
+      var thisObjectName1 = controlButtonObjects[0].name;
+      var thisbuttonObject1 = scene.getObjectByName(thisObjectName1);
 
+      var thisObjectName2 = controlButtonObjects[1].name;
+      var thisbuttonObject2 = scene.getObjectByName(thisObjectName2);
 
+      var thisObjectName3 = controlButtonObjects[2].name;
+      var thisbuttonObject3 = scene.getObjectByName(thisObjectName3);
 
-  ///button animation///
-  if (controlButtonObjects != null){
-    //Get button objects by name
-    var thisObjectName1 = controlButtonObjects[0].name;
-    var thisbuttonObject1 = scene.getObjectByName(thisObjectName1);
+      var thisObjectName4 = controlButtonObjects[3].name;
+      var thisbuttonObject4 = scene.getObjectByName(thisObjectName4);
 
-    var thisObjectName2 = controlButtonObjects[1].name;
-    var thisbuttonObject2 = scene.getObjectByName(thisObjectName2);
+      var thisObjectName5 = controlButtonObjects[4].name;
+      var thisbuttonObject5 = scene.getObjectByName(thisObjectName5);
 
-    var thisObjectName3 = controlButtonObjects[2].name;
-    var thisbuttonObject3 = scene.getObjectByName(thisObjectName3);
+      var thisObjectName6 = controlButtonObjects[5].name;
+      var thisbuttonObject6 = scene.getObjectByName(thisObjectName6);
 
-    var thisObjectName4 = controlButtonObjects[3].name;
-    var thisbuttonObject4 = scene.getObjectByName(thisObjectName4);
-
-    var thisObjectName5 = controlButtonObjects[4].name;
-    var thisbuttonObject5 = scene.getObjectByName(thisObjectName5);
-
-    var thisObjectName6 = controlButtonObjects[5].name;
-    var thisbuttonObject6 = scene.getObjectByName(thisObjectName6);
-
-    var thisObjectName7 = controlButtonObjects[6].name;
-    var thisbuttonObject7 = scene.getObjectByName(thisObjectName7);
+      var thisObjectName7 = controlButtonObjects[6].name;
+      var thisbuttonObject7 = scene.getObjectByName(thisObjectName7);
 
 
-    if (buttonArrayState[0] == 1){
-      if (thisbuttonObject1.scale.x == unhoveredButtonScale){
-        var buttonScaleUp = function () {
-          return new TWEEN.Tween({
-            scale: unhoveredButtonScale
-          }).to ({
-            scale : unhoveredButtonScaleUp
-          }, buttonAnimSpeed).onUpdate(function () {
-            thisbuttonObject1.scale.x = this.scale;
-            thisbuttonObject1.scale.y = this.scale;
-            thisbuttonObject1.scale.y = this.scale;
-          });
-        };
-        buttonScaleUp().start();
-      }
-      thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      if (buttonArrayState[0] == 1){
+        if (thisbuttonObject1.scale.x == unhoveredButtonScale){
+          var buttonScaleUp = function () {
+            return new TWEEN.Tween({
+              scale: unhoveredButtonScale
+            }).to ({
+              scale : unhoveredButtonScaleUp
+            }, buttonAnimSpeed).onUpdate(function () {
+              thisbuttonObject1.scale.x = this.scale;
+              thisbuttonObject1.scale.y = this.scale;
+              thisbuttonObject1.scale.y = this.scale;
+            });
+          };
+          buttonScaleUp().start();
+        }
+        thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
 
-    } else if (buttonArrayState[1] == 1){
-      thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      if (thisbuttonObject2.scale.x == unhoveredButtonScale){
-        var buttonScaleUp = function () {
-          return new TWEEN.Tween({
-            scale: unhoveredButtonScale
-          }).to ({
-            scale : unhoveredButtonScaleUp
-          }, buttonAnimSpeed).onUpdate(function () {
-            thisbuttonObject2.scale.x = this.scale;
-            thisbuttonObject2.scale.y = this.scale;
-            thisbuttonObject2.scale.y = this.scale;
-          });
-        };
-        buttonScaleUp().start();
-      }
-      thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      } else if (buttonArrayState[1] == 1){
+        thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        if (thisbuttonObject2.scale.x == unhoveredButtonScale){
+          var buttonScaleUp = function () {
+            return new TWEEN.Tween({
+              scale: unhoveredButtonScale
+            }).to ({
+              scale : unhoveredButtonScaleUp
+            }, buttonAnimSpeed).onUpdate(function () {
+              thisbuttonObject2.scale.x = this.scale;
+              thisbuttonObject2.scale.y = this.scale;
+              thisbuttonObject2.scale.y = this.scale;
+            });
+          };
+          buttonScaleUp().start();
+        }
+        thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
 
-    } else if (buttonArrayState[2] == 1){
-      thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      if (thisbuttonObject3.scale.x == unhoveredButtonScale){
-        var buttonScaleUp = function () {
-          return new TWEEN.Tween({
-            scale: unhoveredButtonScale
-          }).to ({
-            scale : unhoveredButtonScaleUp
-          }, buttonAnimSpeed).onUpdate(function () {
-            thisbuttonObject3.scale.x = this.scale;
-            thisbuttonObject3.scale.y = this.scale;
-            thisbuttonObject3.scale.y = this.scale;
-          });
-        };
-        buttonScaleUp().start();
-      }
-      thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      } else if (buttonArrayState[2] == 1){
+        thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        if (thisbuttonObject3.scale.x == unhoveredButtonScale){
+          var buttonScaleUp = function () {
+            return new TWEEN.Tween({
+              scale: unhoveredButtonScale
+            }).to ({
+              scale : unhoveredButtonScaleUp
+            }, buttonAnimSpeed).onUpdate(function () {
+              thisbuttonObject3.scale.x = this.scale;
+              thisbuttonObject3.scale.y = this.scale;
+              thisbuttonObject3.scale.y = this.scale;
+            });
+          };
+          buttonScaleUp().start();
+        }
+        thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
 
-    } else if (buttonArrayState[3] == 1){
-      thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      if (thisbuttonObject4.scale.x == unhoveredButtonScale){
-        var buttonScaleUp = function () {
-          return new TWEEN.Tween({
-            scale: unhoveredButtonScale
-          }).to ({
-            scale : unhoveredButtonScaleUp
-          }, buttonAnimSpeed).onUpdate(function () {
-            thisbuttonObject4.scale.x = this.scale;
-            thisbuttonObject4.scale.y = this.scale;
-            thisbuttonObject4.scale.y = this.scale;
-          });
-        };
-        buttonScaleUp().start();
-      }
-      thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      } else if (buttonArrayState[3] == 1){
+        thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        if (thisbuttonObject4.scale.x == unhoveredButtonScale){
+          var buttonScaleUp = function () {
+            return new TWEEN.Tween({
+              scale: unhoveredButtonScale
+            }).to ({
+              scale : unhoveredButtonScaleUp
+            }, buttonAnimSpeed).onUpdate(function () {
+              thisbuttonObject4.scale.x = this.scale;
+              thisbuttonObject4.scale.y = this.scale;
+              thisbuttonObject4.scale.y = this.scale;
+            });
+          };
+          buttonScaleUp().start();
+        }
+        thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
 
-    } else if (buttonArrayState[4] == 1){
-      thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      if (thisbuttonObject5.scale.x == unhoveredButtonScale){
-        var buttonScaleUp = function () {
-          return new TWEEN.Tween({
-            scale: unhoveredButtonScale
-          }).to ({
-            scale : unhoveredButtonScaleUp
-          }, buttonAnimSpeed).onUpdate(function () {
-            thisbuttonObject5.scale.x = this.scale;
-            thisbuttonObject5.scale.y = this.scale;
-            thisbuttonObject5.scale.y = this.scale;
-          });
-        };
-        buttonScaleUp().start();
-      }
-      thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      } else if (buttonArrayState[4] == 1){
+        thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        if (thisbuttonObject5.scale.x == unhoveredButtonScale){
+          var buttonScaleUp = function () {
+            return new TWEEN.Tween({
+              scale: unhoveredButtonScale
+            }).to ({
+              scale : unhoveredButtonScaleUp
+            }, buttonAnimSpeed).onUpdate(function () {
+              thisbuttonObject5.scale.x = this.scale;
+              thisbuttonObject5.scale.y = this.scale;
+              thisbuttonObject5.scale.y = this.scale;
+            });
+          };
+          buttonScaleUp().start();
+        }
+        thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
 
-    } else if (buttonArrayState[5] == 1){
-      thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      if (thisbuttonObject6.scale.x == unhoveredButtonScale){
-        var buttonScaleUp = function () {
-          return new TWEEN.Tween({
-            scale: unhoveredButtonScale
-          }).to ({
-            scale : unhoveredButtonScaleUp
-          }, buttonAnimSpeed).onUpdate(function () {
-            thisbuttonObject6.scale.x = this.scale;
-            thisbuttonObject6.scale.y = this.scale;
-            thisbuttonObject6.scale.y = this.scale;
-          });
-        };
-        buttonScaleUp().start();
-      }
-      thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+      } else if (buttonArrayState[5] == 1){
+        thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        if (thisbuttonObject6.scale.x == unhoveredButtonScale){
+          var buttonScaleUp = function () {
+            return new TWEEN.Tween({
+              scale: unhoveredButtonScale
+            }).to ({
+              scale : unhoveredButtonScaleUp
+            }, buttonAnimSpeed).onUpdate(function () {
+              thisbuttonObject6.scale.x = this.scale;
+              thisbuttonObject6.scale.y = this.scale;
+              thisbuttonObject6.scale.y = this.scale;
+            });
+          };
+          buttonScaleUp().start();
+        }
+        thisbuttonObject7.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
 
-    } else if (buttonArrayState[6] == 1){
-      thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
-      if (thisbuttonObject7.scale.x == unhoveredButtonScale){
-        var buttonScaleUp = function () {
-          return new TWEEN.Tween({
-            scale: unhoveredButtonScale
-          }).to ({
-            scale : unhoveredButtonScaleUp
-          }, buttonAnimSpeed).onUpdate(function () {
-            thisbuttonObject7.scale.x = this.scale;
-            thisbuttonObject7.scale.y = this.scale;
-            thisbuttonObject7.scale.y = this.scale;
-          });
-        };
-        buttonScaleUp().start();
-      }
-    }
-  }
-
-  ///endbuttonanimation
-
-  mousePressed = false;
-  var gesture = { time:noteCounter };
-  if (intersect != null){
-    if ( intersect.object == plane ) {
-      if (intersect != null){
-        if (currCell!= null){
-          socket.emit('sendGesture', {'Data': currCell, 'pressedGestureTime': gesture});
+      } else if (buttonArrayState[6] == 1){
+        thisbuttonObject1.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject2.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject3.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject4.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject5.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        thisbuttonObject6.scale.set(unhoveredButtonScale,unhoveredButtonScale,unhoveredButtonScale);
+        if (thisbuttonObject7.scale.x == unhoveredButtonScale){
+          var buttonScaleUp = function () {
+            return new TWEEN.Tween({
+              scale: unhoveredButtonScale
+            }).to ({
+              scale : unhoveredButtonScaleUp
+            }, buttonAnimSpeed).onUpdate(function () {
+              thisbuttonObject7.scale.x = this.scale;
+              thisbuttonObject7.scale.y = this.scale;
+              thisbuttonObject7.scale.y = this.scale;
+            });
+          };
+          buttonScaleUp().start();
         }
       }
     }
-  }
 
-  noteCounter = 3;
+    ///endbuttonanimation
+
+    mousePressed = false;
+    var gesture = { time:noteCounter };
+    if (intersect != null){
+      if ( intersect.object == plane ) {
+        if (intersect != null){
+          if (currCell!= null){
+            socket.emit('sendGesture', {'Data': currCell, 'pressedGestureTime': gesture});
+          }
+        }
+      }
+    }
+
+    noteCounter = 3;
+
+  }
 
 }
 
@@ -3258,16 +3246,16 @@ function render() {
   requestAnimationFrame(render);
 
 
-if (whiteSlate != null){
-  whiteSlate.lookAt( camera.position );
-  if ( (onLoad == true) && (number>.02 )){
-    number = number * .7;
-    if(number< .025 ){
-      scene.remove( whiteSlate );
+  if (whiteSlate != null){
+    whiteSlate.lookAt( camera.position );
+    if ( (onLoad == true) && (number>.02 )){
+      number = number * .7;
+      if(number< .025 ){
+        scene.remove( whiteSlate );
+      }
     }
+    whiteSlate.material.opacity = (number);
   }
-  whiteSlate.material.opacity = (number);
-}
 
 
 
@@ -3414,13 +3402,13 @@ if (whiteSlate != null){
 function note1_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
 
@@ -3434,16 +3422,15 @@ function note1_1(volumeGesture) {
 function note2_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
-
   var gain  = new Tone.Gain(volumeGesture);
   synth.connect(gain);
   gain.toMaster();
@@ -3454,13 +3441,13 @@ function note2_1(volumeGesture) {
 function note3_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3472,13 +3459,13 @@ function note3_1(volumeGesture) {
 function note4_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3490,13 +3477,13 @@ function note4_1(volumeGesture) {
 function note5_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3509,13 +3496,13 @@ function note5_1(volumeGesture) {
 function note6_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3527,13 +3514,13 @@ function note6_1(volumeGesture) {
 function note7_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3549,13 +3536,13 @@ function note7_1(volumeGesture) {
 function note8_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3567,13 +3554,13 @@ function note8_1(volumeGesture) {
 function note9_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3585,13 +3572,13 @@ function note9_1(volumeGesture) {
 function note10_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3603,13 +3590,13 @@ function note10_1(volumeGesture) {
 function note11_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3622,13 +3609,13 @@ function note11_1(volumeGesture) {
 function note12_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3641,13 +3628,13 @@ function note12_1(volumeGesture) {
 function note13_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3660,13 +3647,13 @@ function note13_1(volumeGesture) {
 function note14_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3679,13 +3666,13 @@ function note14_1(volumeGesture) {
 function note15_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3699,13 +3686,13 @@ function note15_1(volumeGesture) {
 function note16_1(volumeGesture) {
   var synth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare100"
+      type : "triangle"
     },
     envelope : {
-      attack : volumeGesture/1,
-      decay : volumeGesture/3,
+      attack : volumeGesture/8,
+      decay : volumeGesture/4,
       sustain : volumeGesture/6,
-      release : volumeGesture/2
+      release : volumeGesture/4
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -3717,12 +3704,9 @@ function note16_1(volumeGesture) {
 
 
 
-
-
 //////////////////////////////////
 //*********YELLOW SYNTH*********//
 //////////////////////////////////
-
 
 
 
@@ -4376,13 +4360,13 @@ function note16_3(volumeGesture) {
 function note1_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4394,13 +4378,13 @@ function note1_4(volumeGesture) {
 function note2_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4412,13 +4396,13 @@ function note2_4(volumeGesture) {
 function note3_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4430,13 +4414,13 @@ function note3_4(volumeGesture) {
 function note4_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4448,13 +4432,13 @@ function note4_4(volumeGesture) {
 function note5_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4466,13 +4450,13 @@ function note5_4(volumeGesture) {
 function note6_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4484,13 +4468,13 @@ function note6_4(volumeGesture) {
 function note7_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4502,13 +4486,13 @@ function note7_4(volumeGesture) {
 function note8_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4520,13 +4504,13 @@ function note8_4(volumeGesture) {
 function note9_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4539,13 +4523,13 @@ function note9_4(volumeGesture) {
 function note10_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4558,13 +4542,13 @@ function note10_4(volumeGesture) {
 function note11_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4576,13 +4560,13 @@ function note11_4(volumeGesture) {
 function note12_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4595,13 +4579,13 @@ function note12_4(volumeGesture) {
 function note13_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4615,13 +4599,13 @@ function note13_4(volumeGesture) {
 function note14_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4635,13 +4619,13 @@ function note14_4(volumeGesture) {
 function note15_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -4655,13 +4639,13 @@ function note15_4(volumeGesture) {
 function note16_4(volumeGesture) {
   var duoSynth = new Tone.DuoSynth({
     oscillator : {
-      type : "fatsquare3"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : 0.3,
-      decay : .1,
-      sustain : 0.3,
-      release : 0.4
+      attack : 0.003,
+      decay : .001,
+      sustain : 0.003,
+      release : 0.004
     }
   });
   var gain  = new Tone.Gain(volumeGesture);
@@ -5324,747 +5308,310 @@ function note16_6(volumeGesture) {
 
 
 function note1_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[0])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[0])/3), '3n');
 };
 
 function note2_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[1])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[1])/3), '3n');
 };
 function note3_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[2])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[2])/3), '3n');
 };
 function note4_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[3])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[3])/3), '3n');
 };
 function note5_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[4])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[4])/3), '3n');
 };
 
 function note6_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[5])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[5])/3), '3n');
 };
 
 function note7_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[6])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[6])/3), '3n');
 };
 
 function note8_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[7])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[7])/3), '3n');
 };
 
 
 function note9_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[8])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[8])/3), '3n');
 };
 
 
 function note10_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[9])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[9])/3), '3n');
 };
 
 
 function note11_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[10])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[10])/3), '3n');
 };
 
 function note12_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[11])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[11])/3), '3n');
 };
 
 
 function note13_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[12])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[12])/3), '3n');
 };
 
 
 
 function note14_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[13])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[13])/3), '3n');
 };
 
 
 function note15_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
+  var roundsynth = new Tone.Synth({
     oscillator : {
-      type : "fatsquare5"
+      type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
+      attack : .0009,
+      decay : .09,
+      sustain : 0.001,
+      release : volumeGesture/7
     }
   });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
+  var gain  = new Tone.Gain(volumeGesture);
+  roundsynth.connect(gain);
   gain.toMaster();
 
-
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[14])), '12n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[14])/3), '3n');
 };
 
 
 function note16_7(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var pingPong = new Tone.PingPongDelay("12n", volumeGesture/5);
-  var phaser = new Tone.Phaser({
-    "frequency" : 2,
-    "octaves" : 1,
-    "baseFrequency" : 300
-  });
-  var fmSynth = new Tone.FMSynth({
-    oscillator : {
-      type : "fatsquare5"
-    },
-    envelope : {
-      attack : volumeGesture/8,
-      decay : .01,
-      sustain : 1.1,
-      release : 0.5
-    }
-  });
-
-  fmSynth.connect(gain).connect(phaser).connect(pingPong);
-  gain.toMaster();
-
-  fmSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[15])), '12n');
-};
-
-
-/////////////////////
-///////aqua synth////
-/////////////////////
-
-
-
-function note1_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
   var roundsynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
+      attack : .0009,
+      decay : .09,
       sustain : 0.001,
-      release : .2
+      release : volumeGesture/7
     }
   });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[0])/2), '3n');
-};
-
-function note2_8(volumeGesture) {
   var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
   roundsynth.connect(gain);
   gain.toMaster();
 
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[1])/2), '3n');
-};
-function note3_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[2])/2), '3n');
-};
-function note4_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[3])/2), '3n');
-};
-function note5_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[4])/2), '3n');
-};
-function note6_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[5])/2), '3n');
-};
-function note7_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[6])/2), '3n');
-};
-function note8_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[7])/2), '3n');
-};
-function note9_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[8])/2), '3n');
-};
-function note10_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[9])/2), '3n');
-};
-function note11_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[10])/2), '3n');
-};
-function note12_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[11])/2), '3n');
-};
-
-function note13_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[12])/2), '3n');
-};
-
-function note14_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[13])/2), '3n');
-};
-
-function note15_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[14])/2), '3n');
-};
-
-function note16_8(volumeGesture) {
-  var gain  = new Tone.Gain(volumeGesture);
-  var roundsynth = new Tone.Synth({
-    oscillator : {
-      type : "fatsquare1"
-    },
-    envelope : {
-      attack : volumeGesture/10,
-      decay : .4,
-      sustain : 0.001,
-      release : .2
-    }
-  });
-
-  roundsynth.connect(gain);
-  gain.toMaster();
-
-  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[15])/2), '3n');
+  roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[15])/3), '3n');
 };
