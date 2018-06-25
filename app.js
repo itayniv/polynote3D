@@ -56,13 +56,8 @@ init();
 function resetGrid(){
   for (var i = 0; i < width*height; i++){
 
-    // seqarraystate[i].instrument = 'synth01';
-    // seqarraystate[i].color = 'white';
     seqarraystate[i].activated = 0;
     seqarraystate[i].isAdded = 0;
-    // seqarraystate[i].voxelPos = { x : "", y : "" , z : ""};
-    // seqarraystate[i].voxelName = "";
-    // seqarraystate[i].intersectObject = {};
 
   }
   currtimesec = 30;
@@ -70,7 +65,6 @@ function resetGrid(){
   globalbarType = 0;
   //sockets.emit('sendSteps', seqarraystate);
   sockets.emit('resetAll', seqarraystate);
-
   console.log('reset all');
 
 }
@@ -86,9 +80,11 @@ app.get('/GetGridSize', function(req,res){
   res.send(obj)
 });
 
+
 var server = app.listen(port, function () {
   console.log('Example app listening on port 3000!')
 });
+
 
 var sockets = io(server);
 // configure socket handlers
@@ -112,7 +108,6 @@ sockets.on('connection', function(socket){
 
   ////stepsreset
 
-
   socket.on('login', function(data){
     console.log(data.userId + ' connected');
 
@@ -121,9 +116,7 @@ sockets.on('connection', function(socket){
     //console.log(socket.id);
     var currClient = socket.id;
 
-
     currPlayers.push( {currClient: currClient, currClientColor: currClientColor} );
-
 
     currPlayerColor = currPlayers.map(function(player) {
       return player.currClientColor;
@@ -134,7 +127,6 @@ sockets.on('connection', function(socket){
   });
 
   sockets.emit('playerColors', currPlayerColor);
-
 
   socket.send(socket.id);
 
@@ -153,9 +145,6 @@ sockets.on('connection', function(socket){
     var currObjectToBeCopied = data.currobject;
     var serverIntersect = data.currIntersect;
 
-    // console.log('beforecopy', clickedCell , seqarraystate[clickedCell]);
-    // console.log('currObject', clickedCell, currObjectToBeCopied);
-    // console.log(serverIntersect);
     seqarraystate[clickedCell].instrument = currObjectToBeCopied.instrument;
     seqarraystate[clickedCell].color = currObjectToBeCopied.color;
     seqarraystate[clickedCell].activated = currObjectToBeCopied.activated;
@@ -165,16 +154,12 @@ sockets.on('connection', function(socket){
     seqarraystate[clickedCell].serverUID = currObjectToBeCopied.serverUID;
     seqarraystate[clickedCell].intersectObject = serverIntersect;
 
-    // console.log('aftercopy',  seqarraystate[clickedCell].intersectObject);
-
     if( seqarraystate[clickedCell].isAdded == 0 ){
       seqarraystate[clickedCell].isAdded = 1;
     } else {
       seqarraystate[clickedCell].isAdded = 0;
     }
-    // console.log('seqarraystate', clickedCell, "is", seqarraystate[clickedCell].isAdded)
 
-    // console.log('sending array to everybody');
     userID = sockets.engine.clientsCount;
     for (let i = 0; i < width*height; i ++){
       if (seqarraystate[i].isAdded > 0){
@@ -229,66 +214,6 @@ sockets.on('connection', function(socket){
 
     sockets.emit('playerColors', currPlayerColor);
     sockets.emit('usercount', sockets.engine.clientsCount);
-
     //console.log('User num: ', sockets.engine.clientsCount);
   });
 });
-
-
-
-////////////////tempo///////////
-// By default, a metronome object is set to 60 bpm.
-var metronome = new Metronome();
-// But you could also initialize one at another tempo.
-// It emits a 'tick' event on each beat
-metronome.set(appTempo);
-
-metronome.on('tick', function(){
-  currplayer ++;
-  if (currplayer == 16){
-    currplayer = 0;
-    globalbarType ++;
-    sockets.emit('globalTimetype', globalbarType);
-  }
-  if (globalbarType >= 55){
-    appTempo = 0;
-  }
-
-
-
-  sockets.emit('currplayer', currplayer);
-});
-metronome.start();
-
-
-
-//
-// ////////////////time///////////
-// // By default, a metronome object is set to 60 bpm.
-// var time = new Metronome();
-// // But you could also initialize one at another tempo.
-// // It emits a 'tick' event on each beat
-// time.set(60);
-//
-// time.on('tick', function(){
-//   currtimesec ++
-//
-//   if (currtimesec >= 60){
-//     currtimemin ++;
-//     currtimesec = 0;
-//   }
-//
-//   currtimesecrev = 60 - currtimesec;
-//   currtimeminrev = 2 - currtimemin;
-//
-//   if((currtimesecrev == 1) && (currtimeminrev == 0)){
-//     // resetGrid();
-//   }
-//
-//   sockets.emit('currTime',currtimesecrev, currtimeminrev);
-//
-//
-// });
-// time.start();
-//
-// ////////////////time///////////

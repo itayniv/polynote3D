@@ -46,6 +46,9 @@ var unhoveredButtonScale = .26;
 var unhoveredButtonScaleUp = .38;
 
 var mouseDownEvent = false;
+var timecounter = 0;
+
+var currMetronomeBar = 0;
 
 //button variables
 var buttonRaycaster = new THREE.Raycaster();
@@ -56,12 +59,8 @@ var INTERSECTED;
 var HOVER_INTERSECTED;
 var CLICK_INTERSECTED;
 
-var radius = 500;
-var theta = 0;
-var frustumSize = 1000;
 var controlButtonObjects = [];
 var appButtonObjects = [];
-var currID = 0;
 
 var mousePressed = false;
 var noteCounter = 0;
@@ -100,9 +99,19 @@ var protoObject6;
 var protoObject7;
 
 
-
-
 ////---------> Code
+
+//initialize Metronome
+  var toneMetronome = new Tone.Loop(function(time){
+    //triggered every eighth note.
+    currMetronomeBar ++;
+    if (currMetronomeBar == 16){
+      currMetronomeBar = 0;
+    }
+    nextBarToPlay(currMetronomeBar);
+
+  }, "8n").start(0);
+  Tone.Transport.start();
 
 
 
@@ -252,8 +261,6 @@ $.ajax({
 });
 
 
-
-
 // instatiate notation array
 for (i = 0 ; i < 300 ; i++){
   thisnotationArr[i] = false;
@@ -274,7 +281,6 @@ for (var i = 0; i < width*height; i++){
   serverUID: 0};
 }
 
-
 //on page load finish do the next things:
 
 window.onload = function() {
@@ -289,6 +295,7 @@ window.onload = function() {
   },200);
 
   // add all the objects from array recieved from server:
+
   if (seqarr[0] != null){
     updatevoxels();
     for ( let i = 0; i < width*height; i++ ){
@@ -298,9 +305,7 @@ window.onload = function() {
   }
 };
 
-
 init();
-
 
 function loadModels(loadingManager=null){
 
@@ -483,8 +488,6 @@ function init() {
   whiteSlate.position.y = 400;
   whiteSlate.position.z = 400;
 
-
-
   scene.add( whiteSlate );
 
   //end load function
@@ -511,9 +514,88 @@ function init() {
         side: THREE.DoubleSide
       } );
 
-      var message = 16-i + '°';
-      var shapes = font.generateShapes( message, 15, 4 );
-      var geometry = new THREE.ShapeGeometry( shapes );
+      if (i == 0){
+        var message = "C";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 1){
+        var message = "B";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 2){
+        var message = "A";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 3){
+        var message = "G";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 4){
+        var message = "F";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 5){
+        var message = "E";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 6){
+        var message = "D";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 7){
+        var message = "C";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 8){
+        var message = "Bb";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 9){
+        var message = "A";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 10){
+        var message = "G";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 11){
+        var message = "F";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 12){
+        var message = "E";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 13){
+        var message = "D";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 14){
+        var message = "C";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+      if (i == 15){
+        var message = "A#";
+        var shapes = font.generateShapes( message, 15, 4 );
+        var geometry = new THREE.ShapeGeometry( shapes );
+      }
+
+
 
       geometry.computeBoundingBox();
 
@@ -553,7 +635,6 @@ function init() {
         var color = 0xDBDBDB;
       }
 
-
       var matDark = new THREE.LineBasicMaterial( {
         color: color,
         side: THREE.DoubleSide
@@ -588,11 +669,8 @@ function init() {
       fontText.translateX( - 500 + boxSize/2 );
       fontText.rotation.x = -90 * (Math.PI / 180);;
       scene.add( fontText );
-
     } );
   }
-
-
 }
 
 function loadText(){
@@ -1234,8 +1312,11 @@ if (checkId != true){
 
 
 
-socket.on('currplayer', function(incomingTick){
-  globalTick = incomingTick;
+// socket.on('currplayer', function(incomingTick){
+
+function nextBarToPlay(currMetronomeBar){
+
+  globalTick = currMetronomeBar;
   //the playerhead animation
   for(var i=0; i < width;i++){
     pattern01[i] = 0;
@@ -1247,8 +1328,6 @@ socket.on('currplayer', function(incomingTick){
       voxelPlayer.position.copy( {x: (-(1000/2)+boxSize*i+(boxSize/2)), y: ((boxSize/9)/2), z: 0});
     }
   }
-
-
 
 
 
@@ -1278,7 +1357,6 @@ socket.on('currplayer', function(incomingTick){
 
 
 
-
   // Check what sounds to play
   if (onLoad == true){
     for (var i = 0; i < (width*height) ;i++){
@@ -1293,6 +1371,7 @@ socket.on('currplayer', function(incomingTick){
             var selectedObject = scene.getObjectByName(voxelToColor);
             var currColor = selectedObject.material.color;
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .945, g: .717, b: .756} ,150 , 0);
+            console.log("Sound");
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*1)] == 1)){
             var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
@@ -2382,17 +2461,8 @@ socket.on('currplayer', function(incomingTick){
       }
     }
   }
-});
+};
 
-//
-// time of piece - clock time
-// TODO set time to reset
-// socket.on('currTime', function(clientCurrTimeSec, clientCurrTimeMin){
-//   currsec = clientCurrTimeSec;
-//   currmin = clientCurrTimeMin;
-//   document.getElementById("p4").innerHTML = currmin +':'+ currsec +  ' seconds until session resets';
-//
-// });
 
 
 socket.on('globalTimetype', function(incomingBar){
@@ -2505,7 +2575,6 @@ function onMouseMove( event ) {
           };
           buttonScaleUp().start();
         }
-        //TODO scalethis
         thisbuttonObject2.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
         thisbuttonObject3.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
         thisbuttonObject4.scale.set(unhoveredButtonScale, unhoveredButtonScale, unhoveredButtonScale);
@@ -2944,7 +3013,6 @@ function onDocumentMouseDown( event ) {
 
         var thisButtonObjectName9 = appButtonObjects[0].name;
         var thisbuttonObject9 = scene.getObjectByName(thisButtonObjectName9);
-        //TODO click
       }
 
 
@@ -3245,7 +3313,6 @@ function onDocumentMouseUp( event ) {
 function render() {
   requestAnimationFrame(render);
 
-
   if (whiteSlate != null){
     whiteSlate.lookAt( camera.position );
     if ( (onLoad == true) && (number>.02 )){
@@ -3256,8 +3323,6 @@ function render() {
     }
     whiteSlate.material.opacity = (number);
   }
-
-
 
 
   // button update position
@@ -3290,7 +3355,6 @@ function render() {
     var thisObjectName09 = scene.getObjectByName( "about" );
 
     var thisObjectName10 = scene.getObjectByName( "polynote" );
-
 
 
     thisbuttonObject1.position.copy( camera.position );
@@ -3382,9 +3446,6 @@ function render() {
 
   }
 
-
-
-
   renderer.render( scene, camera );
 
 }
@@ -3415,7 +3476,6 @@ function note1_1(volumeGesture) {
   var gain  = new Tone.Gain(volumeGesture);
   synth.connect(gain);
   gain.toMaster();
-
   synth.triggerAttackRelease(440 * Tone.intervalToFrequencyRatio(LydianScalesA[15]), '9n');
 };
 
@@ -3725,7 +3785,6 @@ function note1_2(volumeGesture) {
   var gain  = new Tone.Gain(volumeGesture);
   synthYellow.connect(gain);
   gain.toMaster();
-
   synthYellow.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[0])/3), '9n');
 };
 
@@ -4024,9 +4083,6 @@ function note16_2(volumeGesture) {
 
   synthYellow.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[15])/3), '9n');
 };
-
-
-
 
 
 
@@ -4356,16 +4412,15 @@ function note16_3(volumeGesture) {
 
 
 
-
 function note1_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4373,17 +4428,18 @@ function note1_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[0])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[0]))/8), '7n');
 };
+
 function note2_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4391,17 +4447,17 @@ function note2_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[1])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[1]))/8), '7n');
 };
 function note3_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4409,17 +4465,17 @@ function note3_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[2])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[2]))/8), '7n');
 };
 function note4_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4427,17 +4483,17 @@ function note4_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[3])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[3]))/8), '7n');
 };
 function note5_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4445,17 +4501,17 @@ function note5_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[4])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[4]))/8), '7n');
 };
 function note6_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4463,17 +4519,17 @@ function note6_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[5])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[5]))/8), '7n');
 };
 function note7_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4481,17 +4537,17 @@ function note7_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[6])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[6]))/8), '7n');
 };
 function note8_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4499,17 +4555,17 @@ function note8_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[7])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[7]))/8), '7n');
 };
 function note9_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4517,18 +4573,18 @@ function note9_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[8])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[8]))/8), '7n');
 };
 
 function note10_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4536,18 +4592,18 @@ function note10_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[9])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[9]))/8), '7n');
 };
 
 function note11_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4555,17 +4611,17 @@ function note11_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[10])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[10]))/8), '7n');
 };
 function note12_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4573,18 +4629,18 @@ function note12_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[11])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[11]))/8), '7n');
 };
 
 function note13_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4592,19 +4648,19 @@ function note13_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[12])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[12]))/8), '7n');
 };
 
 
 function note14_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4612,19 +4668,19 @@ function note14_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[13])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[13]))/8), '7n');
 };
 
 
 function note15_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .1,
+      sustain : 0.03,
       release : 0.004
     }
   });
@@ -4632,19 +4688,19 @@ function note15_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[14])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[14]))/8), '7n');
 };
 
 
 function note16_4(volumeGesture) {
-  var duoSynth = new Tone.DuoSynth({
+  var duoSynth = new Tone.Synth({
     oscillator : {
       type : "fatsquare1"
     },
     envelope : {
-      attack : 0.003,
-      decay : .001,
-      sustain : 0.003,
+      attack : 0.00003,
+      decay : .2,
+      sustain : 0.13,
       release : 0.004
     }
   });
@@ -4652,7 +4708,7 @@ function note16_4(volumeGesture) {
   duoSynth.connect(gain);
   gain.toMaster();
 
-  duoSynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[15])/4), '7n');
+  duoSynth.triggerAttackRelease(((440 * Tone.intervalToFrequencyRatio(LydianScalesA[15]))/8), '7n');
 };
 
 
@@ -4972,8 +5028,6 @@ function note16_5(volumeGesture) {
   gain.toMaster();
   roundsynth.triggerAttackRelease((440 * Tone.intervalToFrequencyRatio(LydianScalesA[15])), '3n');
 };
-
-
 
 
 
