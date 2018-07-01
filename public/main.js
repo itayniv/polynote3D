@@ -34,6 +34,7 @@ var buttonAnimSpeed = 80;
 var playerColorArray = [0xF10037, 0xF9D710, 0x785ABA, 0xCC864E, 0x4DDB87, 0xE57165, 0x48C2FF];
 var fontLoaded = false;
 var bgAboutButton;
+var bgClearButton;
 var lightBoxOn = false;
 var rollOverMesh, rollOverMaterial;
 var controls;
@@ -41,6 +42,7 @@ var whiteSlate;
 var disableWhite = false;
 var number = 100.0;
 var tempMeshOn = false;
+var buildState = false;
 
 var unhoveredButtonScale = .26;
 var unhoveredButtonScaleUp = .38;
@@ -110,13 +112,14 @@ var protoObject7;
     }
     nextBarToPlay(currMetronomeBar);
 
-  }, "8n").start(0);
+  }, "10n").start(0);
   Tone.Transport.start();
 
 
 
 function buildArrayForGridState(listCellState, synth, currCell, voxleName){
 
+    buildState = true;
   if (listCellState[currCell].activated!==1){
     listCellState[currCell].activated = 1;
     if (synth == 'red'){
@@ -290,6 +293,8 @@ window.onload = function() {
     loadAbout();
     loadButtonbyOrder();
     loadAboutButton();
+    loadClearButton();
+    loadClearText();
     disableWhite = true;
 
   },200);
@@ -772,7 +777,6 @@ function loadAbout(){
 }
 
 
-
 function loadAboutButton(){
   //  about button BG
   var geometry = new THREE.BoxBufferGeometry( 200, 200, 200 );
@@ -844,6 +848,71 @@ function loadButtonbyOrder(){
   }
 }
 
+function loadClearButton(){
+  //  clear button BG
+  var geometry = new THREE.BoxBufferGeometry( 200, 200, 200 );
+  var material = new THREE.MeshBasicMaterial( {
+    color: 0xFF9DA9,
+    transparent: true,
+    opacity: 0.1,
+  } );
+  bgClearButton = new THREE.Mesh( geometry, material );
+  bgClearButton.scale.z = .001;
+  bgClearButton.scale.x = .3;
+  bgClearButton.scale.y = .15;
+  bgClearButton.name = 'clearBG';
+  scene.add( bgClearButton );
+  appButtonObjects.push ( bgClearButton );
+}
+
+
+
+
+function loadClearText(){
+  var clearFontLoader = new THREE.FontLoader();
+  clearFontLoader.load( 'fonts/Roboto Mono Light_Regular.json', function ( font ) {
+    var clearxMid;
+    var clearFontText;
+    var clearTextShape = new THREE.BufferGeometry();
+
+    var color = 0xA3A3A3;
+
+    var matDark = new THREE.LineBasicMaterial( {
+      color: color,
+      side: THREE.DoubleSide
+    } );
+
+    var matLite = new THREE.MeshBasicMaterial( {
+      color: color,
+      transparent: true,
+      opacity: 1.0,
+      side: THREE.DoubleSide
+    } );
+
+    var clearMessage = "Clear";
+    var clearShapes = font.generateShapes( clearMessage, 9, 4 );
+    var geometry = new THREE.ShapeGeometry( clearShapes );
+
+    geometry.computeBoundingBox();
+
+    clearxMid = - 0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
+
+    geometry.translate( clearxMid, 0, 0 );
+    // make shape ( N.B. edge view not visible )
+    clearTextShape.fromGeometry( geometry );
+
+    clearFontText = new THREE.Mesh( clearTextShape, matLite );
+    clearFontText.position.z = 0;
+    clearFontText.position.y = 0;
+    clearFontText.position.x = 0;
+    clearFontText.rotation.x = -90 * (Math.PI / 180);;
+    clearFontText.translateY( 0 );
+    clearFontText.translateX( 0 );
+    clearFontText.name = 'clear';
+    scene.add( clearFontText );
+    appButtonObjects.push ( clearFontText );
+  } );
+}
 
 /////
 
@@ -1344,16 +1413,16 @@ function nextBarToPlay(currMetronomeBar){
 
   }
 
-  function tweenRotation(firstAngle, secondAngle ,duration, delayTime1){
-    var tweenToColor = new TWEEN.Tween(firstAngle)
-    .to(secondAngle, duration)
-    .repeat( 1 )
-    .delay( 0 )
-    .yoyo( true )
-    .easing(TWEEN.Easing.Quartic.In)
-    .start();
-    return  currRotation;
-  }
+  // function tweenRotation(firstAngle, secondAngle ,duration, delayTime1){
+  //   var tweenToColor = new TWEEN.Tween(firstAngle)
+  //   .to(secondAngle, duration)
+  //   .repeat( 1 )
+  //   .delay( 0 )
+  //   .yoyo( true )
+  //   .easing(TWEEN.Easing.Quartic.In)
+  //   .start();
+  //   return  currRotation;
+  // }
 
 
 
@@ -3075,8 +3144,10 @@ function onDocumentMouseDown( event ) {
             setTimeout(function(){
               showBox();
             },100);
-
           }
+        } else if ( CLICK_INTERSECTED.name == "clearBG" ){
+            console.log("clear");
+              socket.emit('ClientReset', {'resetfromclient': 1});
         } else {
           if ( lightBoxOn == true ){
             hideBox();
@@ -3327,7 +3398,7 @@ function render() {
 
   // button update position
 
-  if ((controlButtonObjects != null) && (controlButtonObjects.length == 7) && (appButtonObjects.length == 3)){
+  if ((controlButtonObjects != null) && (controlButtonObjects.length == 7) && (appButtonObjects.length == 5)){
 
     var thisObjectName1 = controlButtonObjects[0].name;
     var thisbuttonObject1 = scene.getObjectByName(thisObjectName1);
@@ -3356,7 +3427,11 @@ function render() {
 
     var thisObjectName10 = scene.getObjectByName( "polynote" );
 
+    var thisObjectName11 = scene.getObjectByName( "clear" );
 
+    var thisObjectName12 = scene.getObjectByName( "clearBG" );
+
+    var winwidth = window.innerWidth;
     thisbuttonObject1.position.copy( camera.position );
     thisbuttonObject1.rotation.copy( camera.rotation );
     // console.log("object", thisbuttonObject1.rotation.x);
@@ -3408,26 +3483,75 @@ function render() {
     thisbuttonObject7.translateZ( - 1000 );
     thisbuttonObject7.translateY( + 270 );
 
-    thisObjectName08.position.copy( camera.position );
-    thisObjectName08.rotation.copy( camera.rotation );
-    thisObjectName08.updateMatrix();
-    thisObjectName08.translateX( 0 );
-    thisObjectName08.translateZ( - 1001 );
-    thisObjectName08.translateY( - 320 );
-
-    thisObjectName09.position.copy( camera.position );
-    thisObjectName09.rotation.copy( camera.rotation );
-    thisObjectName09.updateMatrix();
-    thisObjectName09.translateX( 0 );
-    thisObjectName09.translateZ( - 1000 );
-    thisObjectName09.translateY( - 324 );
-
     thisObjectName10.position.copy( camera.position );
     thisObjectName10.rotation.copy( camera.rotation );
     thisObjectName10.updateMatrix();
     thisObjectName10.translateX( 0 );
     thisObjectName10.translateZ( - 1000 );
     thisObjectName10.translateY( + 325 );
+
+
+
+
+
+    if (!buildState){
+      thisObjectName11.material.visible = false;
+      thisObjectName12.material.visible = false;
+
+      thisObjectName08.position.copy( camera.position );
+      thisObjectName08.rotation.copy( camera.rotation );
+      thisObjectName08.updateMatrix();
+      thisObjectName08.translateX( 0 );
+      thisObjectName08.translateZ( - 1001 );
+      thisObjectName08.translateY( - 320 );
+
+      thisObjectName09.position.copy( camera.position );
+      thisObjectName09.rotation.copy( camera.rotation );
+      thisObjectName09.updateMatrix();
+      thisObjectName09.translateX( 0 );
+      thisObjectName09.translateZ( - 1000 );
+      thisObjectName09.translateY( - 324 );
+
+
+    }else{
+      thisObjectName11.material.visible = true;
+      thisObjectName12.material.visible = true;
+
+
+      thisObjectName11.position.copy( camera.position );
+      thisObjectName11.rotation.copy( camera.rotation );
+      thisObjectName11.updateMatrix();
+      thisObjectName11.translateX( -40 );
+      thisObjectName11.translateZ( - 1000 );
+      thisObjectName11.translateY( - 324 );
+
+      thisObjectName12.position.copy( camera.position );
+      thisObjectName12.rotation.copy( camera.rotation );
+      thisObjectName12.updateMatrix();
+      thisObjectName12.translateX(-40 );
+      thisObjectName12.translateZ( - 1001 );
+      thisObjectName12.translateY( - 320 );
+
+      thisObjectName08.position.copy( camera.position );
+      thisObjectName08.rotation.copy( camera.rotation );
+      thisObjectName08.updateMatrix();
+      thisObjectName08.translateX( 40 );
+      thisObjectName08.translateZ( - 1001 );
+      thisObjectName08.translateY( - 320 );
+
+      thisObjectName09.position.copy( camera.position );
+      thisObjectName09.rotation.copy( camera.rotation );
+      thisObjectName09.updateMatrix();
+      thisObjectName09.translateX( 40 );
+      thisObjectName09.translateZ( - 1000 );
+      thisObjectName09.translateY( - 324 );
+
+
+
+    }
+
+
+
 
   }
 
@@ -5366,7 +5490,7 @@ function note1_7(volumeGesture) {
     oscillator : {
       type : "fatsquare1"
     },
-    envelope : {
+    envelope : { 
       attack : .0009,
       decay : .09,
       sustain : 0.001,
