@@ -208,7 +208,7 @@
 
     .lightbox {
       /** Default lightbox to hidden */
-      display: none;
+      display: block;
 
       /** Position and style */
       position: fixed;
@@ -237,6 +237,9 @@
     }
 
 
+
+
+
     .button:hover {
       background: lightsalmon;
     }
@@ -262,6 +265,10 @@
     align-items: center;
     justify-content: center;
     }
+
+
+
+
 
 }
 

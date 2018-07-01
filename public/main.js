@@ -112,7 +112,7 @@ var protoObject7;
     }
     nextBarToPlay(currMetronomeBar);
 
-  }, "10n").start(0);
+  }, "12n").start(0);
   Tone.Transport.start();
 
 
@@ -1760,7 +1760,7 @@ function nextBarToPlay(currMetronomeBar){
             var voxelToColor = listCellState[i].voxelName;
             var selectedObject = scene.getObjectByName(voxelToColor);
             var currColor = selectedObject.material.color;
-            selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .984, b: .317}   ,150 , 0);
+            selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*1)] == 1)){
             var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
