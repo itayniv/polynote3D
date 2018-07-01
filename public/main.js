@@ -1433,7 +1433,7 @@ function nextBarToPlay(currMetronomeBar){
         if(listCellState[i].instrument == 'synth01'){
 
           if ((listCellState[i].activated==1) && (pattern01[i-(16*0)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note1_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1443,7 +1443,7 @@ function nextBarToPlay(currMetronomeBar){
             console.log("Sound");
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*1)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note2_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1452,7 +1452,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .945, g: .717, b: .756} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*2)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note3_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1461,7 +1461,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .945, g: .717, b: .756} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*3)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note4_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1470,7 +1470,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .945, g: .717, b: .756} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*4)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note5_1(tempmappednumber);
             var voxelToColor = listCellState[i].voxelName;
             var selectedObject = scene.getObjectByName(voxelToColor);
@@ -1478,7 +1478,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .945, g: .717, b: .756} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*5)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note6_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1488,7 +1488,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*6)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note7_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1498,7 +1498,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*7)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note8_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1507,7 +1507,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .945, g: .717, b: .756} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*8)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note9_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1517,7 +1517,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*9)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note10_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1527,7 +1527,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*10)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note11_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1536,7 +1536,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .945, g: .717, b: .756} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*11)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note12_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1547,7 +1547,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*12)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note13_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1557,7 +1557,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           }  else if ((listCellState[i].activated==1) && (pattern01[i-(16*13)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note14_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1568,7 +1568,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*14)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note15_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1577,7 +1577,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .945, g: .717, b: .756} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*15)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note16_1(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1591,7 +1591,7 @@ function nextBarToPlay(currMetronomeBar){
         if(listCellState[i].instrument == 'synth02'){
 
           if ((listCellState[i].activated==1) && (pattern01[i-(16*0)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note16_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1600,7 +1600,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .984, b: .317}   ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*1)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note15_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1609,7 +1609,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .984, b: .317}   ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*2)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note14_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1619,7 +1619,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*3)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note13_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1629,7 +1629,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*4)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note12_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1639,7 +1639,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*5)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note11_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1649,7 +1649,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*6)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note10_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1659,7 +1659,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*7)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note9_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1669,7 +1669,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*8)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note8_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1679,7 +1679,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*9)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note7_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1689,7 +1689,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*10)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note6_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1699,7 +1699,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*11)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note5_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1709,7 +1709,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*12)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note4_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1719,7 +1719,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*13)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note3_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1729,7 +1729,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*14)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note2_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1739,7 +1739,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*15)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note1_2(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1754,7 +1754,7 @@ function nextBarToPlay(currMetronomeBar){
         if(listCellState[i].instrument == 'synth03'){
 
           if ((listCellState[i].activated==1) && (pattern01[i-(16*0)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note16_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1763,7 +1763,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*1)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note15_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1772,7 +1772,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*2)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note14_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1782,7 +1782,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*3)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note13_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1792,7 +1792,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*4)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note12_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1802,7 +1802,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*5)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note11_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1811,7 +1811,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*6)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note10_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1820,7 +1820,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*7)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note9_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1829,7 +1829,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*8)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note8_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1838,7 +1838,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*9)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note7_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1847,7 +1847,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*10)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note6_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1856,7 +1856,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*11)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note5_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1865,7 +1865,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*12)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note4_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1874,7 +1874,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*13)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note3_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1883,7 +1883,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*14)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note2_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1892,7 +1892,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .831, g: .776, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*15)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note1_3(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1904,7 +1904,7 @@ function nextBarToPlay(currMetronomeBar){
         }
 
         if(listCellState[i].instrument == 'synth04'){
-          var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+          var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
           if ((listCellState[i].activated==1) && (pattern01[i-(16*0)] == 1)){
             note16_4(tempmappednumber);
             //play Animation
@@ -1915,7 +1915,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*1)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note15_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1925,7 +1925,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*2)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note14_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1935,7 +1935,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*3)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note13_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1945,7 +1945,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*4)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note12_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1955,7 +1955,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*5)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note11_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1965,7 +1965,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*6)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note10_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1975,7 +1975,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*7)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note9_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1985,7 +1985,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*8)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note8_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -1995,7 +1995,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*9)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note7_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2005,7 +2005,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*10)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note6_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2015,7 +2015,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*11)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note5_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2025,7 +2025,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*12)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note4_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2035,7 +2035,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*13)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note3_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2045,7 +2045,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*14)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note2_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2061,7 +2061,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*15)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note1_4(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2076,7 +2076,7 @@ function nextBarToPlay(currMetronomeBar){
         if(listCellState[i].instrument == 'synth05'){
 
           if ((listCellState[i].activated==1) && (pattern01[i-(16*0)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note16_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2086,7 +2086,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*1)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note15_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2096,7 +2096,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*2)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note14_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2106,7 +2106,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*3)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note13_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2116,7 +2116,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*4)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note12_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2126,7 +2126,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*5)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note11_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2136,7 +2136,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*6)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note10_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2146,7 +2146,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*7)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note9_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2156,7 +2156,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*8)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note8_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2166,7 +2166,7 @@ function nextBarToPlay(currMetronomeBar){
 
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*9)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note7_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2175,7 +2175,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .703, g: .999, b: .921} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*10)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note6_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2184,7 +2184,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .703, g: .999, b: .921} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*11)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note5_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2193,7 +2193,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .703, g: .999, b: .921} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*12)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note4_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2202,7 +2202,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .703, g: .999, b: .921} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*13)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note3_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2211,7 +2211,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .703, g: .999, b: .921} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*14)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note2_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2220,7 +2220,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .703, g: .999, b: .921} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*15)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note1_5(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2234,7 +2234,7 @@ function nextBarToPlay(currMetronomeBar){
         if(listCellState[i].instrument == 'synth06'){
 
           if ((listCellState[i].activated==1) && (pattern01[i-(16*0)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note16_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2243,7 +2243,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*1)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note15_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2252,7 +2252,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*2)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note14_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2261,7 +2261,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*3)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note13_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2270,7 +2270,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*4)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note12_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2279,7 +2279,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*5)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note11_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2288,7 +2288,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*6)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note10_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2297,7 +2297,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*7)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note9_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2306,7 +2306,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*8)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note8_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2315,7 +2315,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*9)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note7_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2324,7 +2324,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*10)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note6_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2333,7 +2333,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*11)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note5_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2342,7 +2342,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*12)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note4_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2351,7 +2351,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*13)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note3_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2360,7 +2360,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*14)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note2_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2369,7 +2369,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .925, g: .615, b: .682} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*15)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note1_6(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2383,7 +2383,7 @@ function nextBarToPlay(currMetronomeBar){
         if(listCellState[i].instrument == 'synth07'){
 
           if ((listCellState[i].activated==1) && (pattern01[i-(16*0)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note16_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2392,7 +2392,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*1)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note15_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2401,7 +2401,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*2)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note14_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2410,7 +2410,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*3)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note13_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2419,7 +2419,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*4)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note12_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2428,7 +2428,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*5)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note11_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2437,7 +2437,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*6)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note10_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2446,7 +2446,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*7)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note9_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2455,7 +2455,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*8)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note8_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2464,7 +2464,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*9)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note7_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2473,7 +2473,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*10)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note6_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2482,7 +2482,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if((listCellState[i].activated==1) && (pattern01[i-(16*11)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note5_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2491,7 +2491,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*12)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note4_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2500,7 +2500,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*13)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note3_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2509,7 +2509,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*14)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note2_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
@@ -2518,7 +2518,7 @@ function nextBarToPlay(currMetronomeBar){
             selectedObject.material.color = tweenPlayedColor(currColor, {r: .796, g: .862, b: .945} ,150 , 0);
 
           } else if ((listCellState[i].activated==1) && (pattern01[i-(16*15)] == 1)){
-            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, 0, 1);
+            var tempmappednumber = map_range(listCellState[i].gesture.time, 0, 100, .05, 1);
             note1_7(tempmappednumber);
             //play Animation
             var voxelToColor = listCellState[i].voxelName;
