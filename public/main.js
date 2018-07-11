@@ -3159,7 +3159,7 @@ function onDocumentMouseDown( event ) {
 }
 
 function onDocumentMouseUp( event ) {
-  event.preventDefault();
+  // event.preventDefault();
 
 
   //enabling controls when not over an object
